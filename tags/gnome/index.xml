@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Gnome on Damien Lespiau</title>
+    <link>https://dlespiau.github.io/tags/gnome/</link>
+    <description>Recent content in Gnome on Damien Lespiau</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-GB</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Tue, 16 Nov 2010 19:30:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://dlespiau.github.io/tags/gnome/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>The GStreamer conference from a Clutter point of view</title>
+      <link>https://dlespiau.github.io/posts/2010-11-16-the-gstreamer-conference-from-a-clutter-point-of-view/</link>
+      <pubDate>Tue, 16 Nov 2010 19:30:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2010-11-16-the-gstreamer-conference-from-a-clutter-point-of-view/</guid>
+      <description>Two weeks ago I attendedthe first GStreamer conference, and it was great. I won&#39;t talk about the 1.0 plan that seems to take shape and looks really good but just what stroke me the most: Happy Clutter Stories and an Tale To Be Told to your manager.
+Let&#39;s move on the Clutter stories. You had a surprising number of people mixing GStreamer and Clutter, two talks especially:
+Florent Thiery founder of Ubicast talked about one of their products: aportable recording system with quite a bit of bling (records the slides, movement detection with OpenCV, RoI, .</description>
+    </item>
+    
+    <item>
+      <title>Using glib.py and gobject.py GDB scripts</title>
+      <link>https://dlespiau.github.io/posts/2010-03-23-using-glib.py-and-gobject.py-gdb-scripts/</link>
+      <pubDate>Tue, 23 Mar 2010 20:58:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2010-03-23-using-glib.py-and-gobject.py-gdb-scripts/</guid>
+      <description>Some time ago, Alexander Larson blogged about using gdb python macros when debugging Glib and GObject projects. I&#39;ve wanted to try those for ages, so I spent part of the week-end looking at what you could do with the new python enabled GDB, result: quite a lot of neat stuff!
+Let&#39;s start by making the script that now comes with glib work on stock gdb 7.0 and 7.1 (ie not the archer branch that contains more of the python work).</description>
+    </item>
+    
+    <item>
+      <title>g_object_notify_by_pspec()</title>
+      <link>https://dlespiau.github.io/posts/2010-01-28-g_object_notify_by_pspec/</link>
+      <pubDate>Thu, 28 Jan 2010 14:30:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2010-01-28-g_object_notify_by_pspec/</guid>
+      <description>Now that GLib 2.26.0 is out, it&amp;rsquo;s time to talk about a little patch to GObject I&amp;rsquo;ve written (well, the original idea was born while looking at it with Neil): add a new g_object_notify_by_pspec() symbol to GObject. As shown in the bug it can improve the notification of GObject properties by 10-15% (the test case tested was without any handler connected to the notify signal).If you can depend on GLib 2.</description>
+    </item>
+    
+    <item>
+      <title>Aligning C function parameters with vim</title>
+      <link>https://dlespiau.github.io/posts/2009-12-07-aligning-c-function-parameters-with-vim/</link>
+      <pubDate>Mon, 07 Dec 2009 12:56:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2009-12-07-aligning-c-function-parameters-with-vim/</guid>
+      <description>updated: now saves/retores the paste registerIt has bothered me for a while, some coding styles, most notably in the GNOME world try to enforce good looking alignment of functions parameters such as:static UniqueResponseon_unique_message_received (UniqueApp *unique_app, gint command, UniqueMessageData *messagedata, guint time, gpointer user_data){}Until now, I aligned the arguments by hand, but that time is over! Please welcome my first substantial vim plugin: it defines a GNOMEAlignArguments command to help you in that task.</description>
+    </item>
+    
+  </channel>
+</rss>

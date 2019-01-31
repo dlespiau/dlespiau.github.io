@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Misc on Damien Lespiau</title>
+    <link>https://dlespiau.github.io/tags/misc/</link>
+    <description>Recent content in Misc on Damien Lespiau</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-GB</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Fri, 05 Dec 2014 18:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://dlespiau.github.io/tags/misc/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Working in a separate prefix</title>
+      <link>https://dlespiau.github.io/posts/2014-12-05-working-in-a-separate-prefix/</link>
+      <pubDate>Fri, 05 Dec 2014 18:00:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2014-12-05-working-in-a-separate-prefix/</guid>
+      <description>I&#39;ve been surprised in the past to discover that even some seasoned engineers didn&#39;t know how to use the autotools prefix feature. A sign they&#39;ve been lucky enough and didn&#39;t have to deal with Autotools too much. Here&#39;s my attempt to provide some introduction to ./configure --prefix.
+Working with or in &#34;a separate prefix&#34; is working with libraries and binaries (well, anything produced by &#39;make install&#39; in an autotooled project really) installed in a different directory than the system-wide ones (/usr or even /usr/local that can become quite messy).</description>
+    </item>
+    
+    <item>
+      <title>Working on more than one line with sed&#39;s &#39;N&#39; command</title>
+      <link>https://dlespiau.github.io/posts/2013-01-03-working-on-more-than-one-line-with-seds-n-command/</link>
+      <pubDate>Thu, 03 Jan 2013 14:24:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2013-01-03-working-on-more-than-one-line-with-seds-n-command/</guid>
+      <description>Yesterday I was asked to help solving a small sed problem. Considering that file (don&#39;t look too closely on the engineering of the defined elements):
+&amp;lt;root&amp;gt;
+&amp;lt;key&amp;gt;key0&amp;lt;/key&amp;gt;
+&amp;lt;string&amp;gt;value0&amp;lt;/string&amp;gt;
+&amp;lt;key&amp;gt;key1&amp;lt;/key&amp;gt;
+&amp;lt;string&amp;gt;value1&amp;lt;/string&amp;gt;
+&amp;lt;key&amp;gt;key2&amp;lt;/key&amp;gt;
+&amp;lt;string&amp;gt;value2&amp;lt;/string&amp;gt;
+&amp;lt;/root&amp;gt;The problem was: How to change value1 to VALUE!. The problem here is that you can&#39;t blindly execute a s command matching &amp;lt;string&amp;gt;.*&amp;lt;/string&amp;gt;.
+Sed maintains a buffer called the &#34;pattern space&#34; and processes commands on this buffer. From the GNU sed manual:</description>
+    </item>
+    
+    <item>
+      <title>A simple autotool template</title>
+      <link>https://dlespiau.github.io/posts/2011-01-17-a-simple-autotool-template/</link>
+      <pubDate>Mon, 17 Jan 2011 01:25:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2011-01-17-a-simple-autotool-template/</guid>
+      <description>Every now and then, you feel a big urge to start hacking on a small thingy and need to create Makefiles for it. Turns out that the autotools won&#39;t be that intrusive when we are talking about small programs and you get do a reasonable job with a few lines, first the configure.ac file:# autoconf
+AC_PREREQ(2.59)
+AC_INIT([fart], [0.0.1], [damien.lespiau@gmail.com])
+AC_CONFIG_MACRO_DIR([build])
+AC_CONFIG_AUX_DIR([build])
+AC_CONFIG_SRCDIR([fart.c])
+AC_CONFIG_HEADERS([config.h])
+# automake
+AM_INIT_AUTOMAKE([1.11 -Wall foreign no-define])
+AM_SILENT_RULES([yes])</description>
+    </item>
+    
+    <item>
+      <title>Per project .vimrc</title>
+      <link>https://dlespiau.github.io/posts/2009-03-18-per-project-.vimrc/</link>
+      <pubDate>Wed, 18 Mar 2009 22:52:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2009-03-18-per-project-.vimrc/</guid>
+      <description>My natural C indentation style is basically kernel-like and my ~/.vimrc reflects that. Unfortunately I have to hack on GNUish-style projects and I really don&#39;t want to edit my ~/.vimrc every single time I switch between different indentation styles.
+Modelines are evil.
+To solve that terrible issue, vim can use per directory configuration files. To enable that neat feature only two little lines are needed in your ~/.vimrc:
+set exrc &#34;</description>
+    </item>
+    
+    <item>
+      <title>Vim macro for change log entry in .spec files</title>
+      <link>https://dlespiau.github.io/posts/2009-02-10-vim-macro-for-change-log-entry-in-.spec-files/</link>
+      <pubDate>Tue, 10 Feb 2009 12:38:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2009-02-10-vim-macro-for-change-log-entry-in-.spec-files/</guid>
+      <description>Tired of writing this kind of lines by hand ?* Mon Feb 09 2009 Damien Lespiau &amp;lt;damien.lespiau@xxxx.com&amp;gt; 1.4.3This vim macro does just this for you!nmap ,mob-ts :r!date +&amp;rsquo;\%a \%b \%d \%Y&amp;rsquo;&amp;lt;CR&amp;gt;0i* &amp;lt;ESC&amp;gt;$a Damien Lespiau &amp;lt;damien.lespiau@xxxx.com&amp;gt; FIXME</description>
+    </item>
+    
+  </channel>
+</rss>

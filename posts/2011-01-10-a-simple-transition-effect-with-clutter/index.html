@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="A simple transition effect with Clutter">
+<meta itemprop="description" content="When doing something with graphics, your first need an idea (granted, as with pretty much everything else). In this case, a simple transition that I&#39;ve seen somewhere a long time ago and I wanted to reproduce with Clutter.
+
+The code is available in a branch of a media explorer I&#39;m currently working on. A few bullet points to follow the code:
+As the effect needs a &#34;screenshot&#34; of a Clutter scene to play with.">
+
+
+<meta itemprop="datePublished" content="2011-01-10T15:06:00&#43;00:00" />
+<meta itemprop="dateModified" content="2011-01-10T15:06:00&#43;00:00" />
+<meta itemprop="wordCount" content="371">
+
+
+
+<meta itemprop="keywords" content="Clutter," />
+<meta property="og:title" content="A simple transition effect with Clutter" />
+<meta property="og:description" content="When doing something with graphics, your first need an idea (granted, as with pretty much everything else). In this case, a simple transition that I&#39;ve seen somewhere a long time ago and I wanted to reproduce with Clutter.
+
+The code is available in a branch of a media explorer I&#39;m currently working on. A few bullet points to follow the code:
+As the effect needs a &#34;screenshot&#34; of a Clutter scene to play with." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dlespiau.github.io/posts/2011-01-10-a-simple-transition-effect-with-clutter/" /><meta property="article:published_time" content="2011-01-10T15:06:00&#43;00:00"/>
+<meta property="article:modified_time" content="2011-01-10T15:06:00&#43;00:00"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="A simple transition effect with Clutter"/>
+<meta name="twitter:description" content="When doing something with graphics, your first need an idea (granted, as with pretty much everything else). In this case, a simple transition that I&#39;ve seen somewhere a long time ago and I wanted to reproduce with Clutter.
+
+The code is available in a branch of a media explorer I&#39;m currently working on. A few bullet points to follow the code:
+As the effect needs a &#34;screenshot&#34; of a Clutter scene to play with."/>
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>A simple transition effect with Clutter</title>
+	<link rel="stylesheet" href="https://dlespiau.github.io/css/style.min.bf17d429527cc9978ec99e8d5e3a5319fb29fb7f783e39f2fbe1260fabfbb57c.css" integrity="sha256-vxfUKVJ8yZeOyZ6NXjpTGfsp+394Pjny++EmD6v7tXw=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://dlespiau.github.io/">Damien Lespiau</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="https://dlespiau.github.io/posts/">Blog</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://twitter.com/__damien__" target="_blank" rel="noopener" title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a><a href="https://github.com/dlespiau" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://dlespiau.github.io/posts/">Blog</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Jan 10, 2011</span></div>
+				<h1>A simple transition effect with Clutter</h1>
+			</header>
+			<div class="content">
+				<div dir="ltr" style="text-align: left;" trbidi="on"><div dir="ltr" style="text-align: left;" trbidi="on"><div dir="ltr" style="text-align: left;" trbidi="on"><div style="text-align: left;">When doing something with graphics, your first need an idea (granted, as with pretty much everything else). In this case, a simple transition that I've seen somewhere a long time ago and I wanted to reproduce with Clutter.<br /><br /></div><div class="separator" style="clear: both; text-align: center;"><iframe allowfullscreen="" class="YOUTUBE-iframe-video" data-thumbnail-src="https://i.ytimg.com/vi/3FjYJ_Z9PK0/0.jpg" frameborder="0" height="266" src="https://www.youtube.com/embed/3FjYJ_Z9PK0?feature=player_embedded" width="320"></iframe></div><br />The code is available in a <a href="https://github.com/media-explorer/media-explorer/tree/wip%2Ftileout-effect" title="wip/tileout-effect branch">branch</a> of a <a href="http://media-explorer.github.com/" title="media explorer">media explorer</a> I'm currently working on. A few bullet points to follow the code:<br /><ul><li>As the effect needs a "screenshot" of a Clutter scene to play with. You first need to create a subclass of <code>ClutterOffscreenEffect</code> as it does the work of redirecting the painting of a subtree of actors in an offscreen buffer that you can&nbsp; reuse to texture the rectangles you'll be animating in the effect. This subclass has a "progress" property to control the animation.</li><li>Then actually compute the coordinates of the grid cells both in screen space and in texture space. To be able to use <code>cogl_rectangles_with_texture_coords()</code>, to try limit the number of GL calls (and/or by the Cogl journal and to ease the animation of the cells fading out, I decided to store the diagonals of the rectangle in a 1D array so that the following grid:<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-LKxVkdVadYU/VrdK93frakI/AAAAAAAAAaw/A-p7eH2wuUI/s1600/grild-diagonals.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="https://2.bp.blogspot.com/-LKxVkdVadYU/VrdK93frakI/AAAAAAAAAaw/A-p7eH2wuUI/s1600/grild-diagonals.png" /></a></div><br />is stored as the following array:<br /></li></ul><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-JoSoRE8iPwk/VrdK903MEpI/AAAAAAAAAas/JOGg9ckytpA/s1600/tileout-1d-rects.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em; text-align: center;"><img border="0" height="32" src="https://1.bp.blogspot.com/-JoSoRE8iPwk/VrdK903MEpI/AAAAAAAAAas/JOGg9ckytpA/s320/tileout-1d-rects.png" width="320" /></a></div></div><ul><li><code>::paint_target()</code>looks at the "progress" property, animate those grid cells accordingly and draw them. <code>priv-&gt;rects</code> is the array storing the initial rectangles, <code>priv-&gt;animated_rects</code> the animated ones and <code>priv-&gt;chunks</code> stores the start and duration of each diagonal animation along with a (index, length) tuple that references the diagonal rectangles in priv-&gt;rects and priv-&gt;animated_rects.</li></ul>Some more details:<br /><ul><li>in the <code>::paint_target()</code> function, you can special case when the progress is 0.0 (paint the whole FBO instead of the textured grid) and 1.0 (don't do anything),</li><li>Clutter does not currently allow to just rerun the effect when you animate a property of an offscreen effect for instance. This means that when animating the "progress" property on the effect, it queues a redraw on the actor that end up in the offscreen to trigger the effect <code>::paint_target()</code> again. A branch from <a href="http://busydoingnothing.co.uk/" title="Neil">Neil</a> allows to queue a "rerun" on the effect to avoid having to do that,</li><li>The code has some limitations right now (ie, n_colums must be equal to n_rows) but easily fixable. Once done, it makes sense to try to push the effect to <a href="https://github.com/clutter-project/mx" title="Mx">Mx</a>.</li></ul></div></div>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://dlespiau.github.io/tags/clutter">Clutter</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>371 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2011-01-10 15:06 &#43;0000</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://dlespiau.github.io/posts/2011-01-17-a-simple-autotool-template/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>A simple autotool template</span>
+			</a>
+			<a class="prev-post" href="https://dlespiau.github.io/posts/2010-11-16-the-gstreamer-conference-from-a-clutter-point-of-view/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>The GStreamer conference from a Clutter point of view</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="https://dlespiau.github.io/">Damien Lespiau</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://dlespiau.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="https://dlespiau.github.io/js/main.min.8f39f24808e9d0a9b02da58c2d2838da859dc0b7bdfadbdb1883aae8b6adacfe.js" integrity="sha256-jznySAjp0KmwLaWMLSg42oWdwLe9+tvbGIOq6LatrP4="></script>
+
+</body>
+
+</html>

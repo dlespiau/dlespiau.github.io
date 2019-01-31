@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Poulpy on Damien Lespiau</title>
+    <link>https://dlespiau.github.io/tags/poulpy/</link>
+    <description>Recent content in Poulpy on Damien Lespiau</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-GB</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Tue, 29 Jan 2008 02:31:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://dlespiau.github.io/tags/poulpy/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Poulpy 0.1 is out !</title>
+      <link>https://dlespiau.github.io/posts/2008-01-29-poulpy-0.1-is-out-/</link>
+      <pubDate>Tue, 29 Jan 2008 02:31:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2008-01-29-poulpy-0.1-is-out-/</guid>
+      <description>Be sure to check its page.</description>
+    </item>
+    
+  </channel>
+</rss>

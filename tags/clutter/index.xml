@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Clutter on Damien Lespiau</title>
+    <link>https://dlespiau.github.io/tags/clutter/</link>
+    <description>Recent content in Clutter on Damien Lespiau</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-GB</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Mon, 31 Jan 2011 15:41:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://dlespiau.github.io/tags/clutter/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Clutter on Android: first results</title>
+      <link>https://dlespiau.github.io/posts/2011-01-31-clutter-on-android-first-results/</link>
+      <pubDate>Mon, 31 Jan 2011 15:41:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2011-01-31-clutter-on-android-first-results/</guid>
+      <description>With the release of Android 2.3, there&#39;s a decent way to integrate native applications with the NativeActivity class, an EGL library, and some C API to expose events, main loop, etc. So? how about porting Clutter to it now that it looks actually feasible? After a few days of work, the first results are there, quite promising!
+
+There&#39;s still a fairly large number of items in my TODO before being happy with the state of this work, the most prominent items are:</description>
+    </item>
+    
+    <item>
+      <title>A simple transition effect with Clutter</title>
+      <link>https://dlespiau.github.io/posts/2011-01-10-a-simple-transition-effect-with-clutter/</link>
+      <pubDate>Mon, 10 Jan 2011 15:06:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2011-01-10-a-simple-transition-effect-with-clutter/</guid>
+      <description>When doing something with graphics, your first need an idea (granted, as with pretty much everything else). In this case, a simple transition that I&#39;ve seen somewhere a long time ago and I wanted to reproduce with Clutter.
+
+The code is available in a branch of a media explorer I&#39;m currently working on. A few bullet points to follow the code:
+As the effect needs a &#34;screenshot&#34; of a Clutter scene to play with.</description>
+    </item>
+    
+    <item>
+      <title>The GStreamer conference from a Clutter point of view</title>
+      <link>https://dlespiau.github.io/posts/2010-11-16-the-gstreamer-conference-from-a-clutter-point-of-view/</link>
+      <pubDate>Tue, 16 Nov 2010 19:30:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2010-11-16-the-gstreamer-conference-from-a-clutter-point-of-view/</guid>
+      <description>Two weeks ago I attendedthe first GStreamer conference, and it was great. I won&#39;t talk about the 1.0 plan that seems to take shape and looks really good but just what stroke me the most: Happy Clutter Stories and an Tale To Be Told to your manager.
+Let&#39;s move on the Clutter stories. You had a surprising number of people mixing GStreamer and Clutter, two talks especially:
+Florent Thiery founder of Ubicast talked about one of their products: aportable recording system with quite a bit of bling (records the slides, movement detection with OpenCV, RoI, .</description>
+    </item>
+    
+    <item>
+      <title>Cogl &#43; JS = Love</title>
+      <link>https://dlespiau.github.io/posts/2009-01-21-cogl--js--love/</link>
+      <pubDate>Wed, 21 Jan 2009 17:59:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2009-01-21-cogl--js--love/</guid>
+      <description>Played a bit with Gjs and Cogl this weekend and ended up rewriting Clutter&#39;s test-cogl-primitives in JavaScript. In the unlikely case someone is interested in trying it, you&#39;ll need a patch to support arrays of float as argument in introspected functions and another small patch to add introspection annotations for a few Cogl symbols. As usual you can grab the code inits git repository:
+
+ </description>
+    </item>
+    
+  </channel>
+</rss>

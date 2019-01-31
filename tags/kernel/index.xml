@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kernel on Damien Lespiau</title>
+    <link>https://dlespiau.github.io/tags/kernel/</link>
+    <description>Recent content in Kernel on Damien Lespiau</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-GB</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Mon, 20 Jan 2014 11:18:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://dlespiau.github.io/tags/kernel/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>git commit --fixup and git rebase -i --autosquash</title>
+      <link>https://dlespiau.github.io/posts/2014-01-20-git-commit---fixup-and-git-rebase--i---autosquash/</link>
+      <pubDate>Mon, 20 Jan 2014 11:18:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2014-01-20-git-commit---fixup-and-git-rebase--i---autosquash/</guid>
+      <description>It&amp;rsquo;s not unusual that I need to fix previous commits up when working on a branch or in the review phase. Until now I used a regular commit with some special marker to remember which commit to squash it with and then git rebase -i to reorder the patches and squash the fixup commits with their corresponding &amp;ldquo;parent&amp;rdquo; commits.
+Turns out, git can handle quite a few of those manual manipulations for you.</description>
+    </item>
+    
+    <item>
+      <title>HDMI stereo 3D &amp; KMS</title>
+      <link>https://dlespiau.github.io/posts/2013-01-02-hdmi-stereo-3d--kms/</link>
+      <pubDate>Wed, 02 Jan 2013 19:38:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2013-01-02-hdmi-stereo-3d--kms/</guid>
+      <description>If everything goes according to plan, KMS in linux 3.13 should have stereo 3D support. Should one be interested in scanning out a stereo frame buffer to a 3D capable HDMI sink, here&#39;s a rough description of how those modes are exposed to user space and how to use them.
+A reader not well acquainted with the DRM sub-system and its mode setting API (Aka Kernel Mode Setting, KMS) could start by watching the first part of Laurent Pinchart&#39;s Anatomy of an Embedded KMS Driver or read David Herrmann&#39;s heavily documented mode setting example code.</description>
+    </item>
+    
+  </channel>
+</rss>

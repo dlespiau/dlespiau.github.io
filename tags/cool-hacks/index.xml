@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cool Hacks on Damien Lespiau</title>
+    <link>https://dlespiau.github.io/tags/cool-hacks/</link>
+    <description>Recent content in Cool Hacks on Damien Lespiau</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-GB</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Sun, 29 Jan 2017 19:45:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://dlespiau.github.io/tags/cool-hacks/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Building and using coverage-instrumented programs with Go</title>
+      <link>https://dlespiau.github.io/posts/2017-01-29-building-and-using-coverage-instrumented-programs-with-go/</link>
+      <pubDate>Sun, 29 Jan 2017 19:45:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2017-01-29-building-and-using-coverage-instrumented-programs-with-go/</guid>
+      <description>tl;dr&amp;nbsp;We can create coverage-instrumented binaries, run them and aggregate the coverage data from running both the program and the unit tests.
+In the Go world, unit testing is tightly integrated with the go tool chain. Write some unit tests, run go test and tell anyone that will listen that you really hope to never have to deal with a build system for the rest of your life.
+Since Go 1.2 (Dec.</description>
+    </item>
+    
+    <item>
+      <title>AS_AM_STFU</title>
+      <link>https://dlespiau.github.io/posts/2010-02-03-as_am_stfu/</link>
+      <pubDate>Wed, 03 Feb 2010 15:04:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2010-02-03-as_am_stfu/</guid>
+      <description>Writing m4 macro is fun, it really is.If you want to have make be a &amp;ldquo;make -s&amp;rdquo; without doing boring stuff like aliases and actually respect the default verbosity of automake &amp;gt;= 1.11, use this small m4 macro I wrote.</description>
+    </item>
+    
+    <item>
+      <title>Still some hair left</title>
+      <link>https://dlespiau.github.io/posts/2009-02-24-still-some-hair-left/</link>
+      <pubDate>Tue, 24 Feb 2009 11:11:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2009-02-24-still-some-hair-left/</guid>
+      <description>I&amp;rsquo;ve been asked to give more input on make V=1 Vs. &amp;ndash;disable-shave, so here it is: once again, before shipping your package with shave enabled by default, there is something crucial to understand: make V=1 (when having configured your package with &amp;ndash;enable-shave) is NOT equivalent to no shave at all (ie &amp;ndash;disable-shave). This is because the shave m4 macro is setting MAKEFLAGS=-s in every single Makefile. This means that make won&amp;rsquo;t print the commands as is used to, and that the only way to print something on the screen is to echo it.</description>
+    </item>
+    
+    <item>
+      <title>After-shave</title>
+      <link>https://dlespiau.github.io/posts/2009-02-23-after-shave/</link>
+      <pubDate>Mon, 23 Feb 2009 01:09:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2009-02-23-after-shave/</guid>
+      <description>A few concerns have been raised by shave, namely not being able to debug build failure in an automated environment as easily as before, or users giving useless bug reports of failed builds.
+One capital thing to realize is that, even when compiling with make V=1, everything that was not echoed was not showed (MAKEFLAGS=-s).
+Thus, I&amp;rsquo;ve made a few changes:
+Add CXX support (yes, that&amp;rsquo;s unrelated, but the question was raised, thanks to Tommi Komulainen for the initial patch),add a &amp;ndash;enable-shave option to the configure script,make the Good Old Behaviour the default one,as a side effect, the V and Q variables are now defined in the m4 macro, please remove them from your Makefile.</description>
+    </item>
+    
+    <item>
+      <title>shave: making the autotools output sane</title>
+      <link>https://dlespiau.github.io/posts/2009-02-18-shave-making-the-autotools-output-sane/</link>
+      <pubDate>Wed, 18 Feb 2009 17:54:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2009-02-18-shave-making-the-autotools-output-sane/</guid>
+      <description>updated: Automake 1.11 has been release with &amp;ldquo;silent rules&amp;rdquo; support, a feature that supersedes the hack that shave is. If you can depend on automake 1.11 please consider using its silent rules rather than shave.
+updated: add some gtk-doc info
+updated: CXX support thanks to Tommi Komulainen
+shave
+Fed up with endless screens of libtool/automake output? Fed up with having to resort to -Werror to see warnings in your code? Then shave might be for you.</description>
+    </item>
+    
+    <item>
+      <title>ADV: ADV is a Dependency Viewer</title>
+      <link>https://dlespiau.github.io/posts/2009-02-10-adv-adv-is-a-dependency-viewer/</link>
+      <pubDate>Tue, 10 Feb 2009 13:25:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2009-02-10-adv-adv-is-a-dependency-viewer/</guid>
+      <description>A few months ago I wrote a small script to draw a dependency graph between the object files of a library (the original idea is from Lionel Landwerlin). You&#39;ll need an archive of your library for the tool to be able to look for the needed pieces. Let&#39;s have a look at a sample of its output to understand what it does. I ran it against the HEAD of clutter.</description>
+    </item>
+    
+    <item>
+      <title>shave 0.1.0</title>
+      <link>https://dlespiau.github.io/posts/2009-01-13-shave-0.1.0/</link>
+      <pubDate>Tue, 13 Jan 2009 12:22:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2009-01-13-shave-0.1.0/</guid>
+      <description>After a month without anyone shouting at shave in despair or horror, it&amp;rsquo;s time to tag something to have a &amp;ldquo;stable&amp;rdquo; branch so people can rely on a stable interface (yes, it&amp;rsquo;s important even for a 100 lines macro!).What&amp;rsquo;s the most amazing is that quite a few projects have adopted shave in the GNOME and freedesktop.org communities : Clutter, Niepce Digital, Giggle, GStreamer, GObject introspection, PulseAudio, ConnMan, Json-glib, libunique, gnote, seed, gnome-utils, libccss, xorg ?</description>
+    </item>
+    
+    <item>
+      <title>Blending two RGBA 5551 layers</title>
+      <link>https://dlespiau.github.io/posts/2009-01-06-blending-two-rgba-5551-layers/</link>
+      <pubDate>Tue, 06 Jan 2009 18:59:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2009-01-06-blending-two-rgba-5551-layers/</guid>
+      <description>I&#39;ve just stumbled accross a small piece of code, written one year and a half ago, that blends two 512x512 RGBA 5551 images. It was originally written for a (good!) GIS, so the piece of code blends roads with rivers (and displays the result in a GdkPixbuf). The only thing interesting is that it uses some MMX, SSE2 and rdtsc instructions. You can have a look at the code in its git repository.</description>
+    </item>
+    
+  </channel>
+</rss>

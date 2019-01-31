@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Damien Lespiau</title>
+    <link>https://dlespiau.github.io/tags/</link>
+    <description>Recent content in Tags on Damien Lespiau</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-GB</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Mon, 31 Jan 2011 15:41:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://dlespiau.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Android</title>
+      <link>https://dlespiau.github.io/tags/android/</link>
+      <pubDate>Mon, 31 Jan 2011 15:41:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Clutter</title>
+      <link>https://dlespiau.github.io/tags/clutter/</link>
+      <pubDate>Mon, 31 Jan 2011 15:41:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/tags/clutter/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cool Hacks</title>
+      <link>https://dlespiau.github.io/tags/cool-hacks/</link>
+      <pubDate>Sun, 29 Jan 2017 19:45:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/tags/cool-hacks/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Drawing</title>
+      <link>https://dlespiau.github.io/tags/drawing/</link>
+      <pubDate>Sun, 03 Jan 2010 18:35:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/tags/drawing/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gnome</title>
+      <link>https://dlespiau.github.io/tags/gnome/</link>
+      <pubDate>Tue, 16 Nov 2010 19:30:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/tags/gnome/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Go</title>
+      <link>https://dlespiau.github.io/tags/go/</link>
+      <pubDate>Sun, 29 Jan 2017 19:45:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/tags/go/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Golang</title>
+      <link>https://dlespiau.github.io/tags/golang/</link>
+      <pubDate>Sun, 29 Jan 2017 19:45:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/tags/golang/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Kernel</title>
+      <link>https://dlespiau.github.io/tags/kernel/</link>
+      <pubDate>Mon, 20 Jan 2014 11:18:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/tags/kernel/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Lespiau.name</title>
+      <link>https://dlespiau.github.io/tags/lespiau.name/</link>
+      <pubDate>Sun, 13 Jan 2008 16:02:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/tags/lespiau.name/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Misc</title>
+      <link>https://dlespiau.github.io/tags/misc/</link>
+      <pubDate>Fri, 05 Dec 2014 18:00:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/tags/misc/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

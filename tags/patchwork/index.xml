@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Patchwork on Damien Lespiau</title>
+    <link>https://dlespiau.github.io/tags/patchwork/</link>
+    <description>Recent content in Patchwork on Damien Lespiau</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-GB</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Mon, 15 Feb 2016 18:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://dlespiau.github.io/tags/patchwork/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Continuous Testing with Patchwork</title>
+      <link>https://dlespiau.github.io/posts/2016-02-15-continuous-testing-with-patchwork/</link>
+      <pubDate>Mon, 15 Feb 2016 18:00:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2016-02-15-continuous-testing-with-patchwork/</guid>
+      <description>As promised in the post introducing my recent work on Patchwork, I&#39;ve written some more in-depth documentation to explain how to hook testing to Patchwork. I&#39;ve also realized that a blog post might not be the best place to put that documentation and opted to put it in the proper manual:
+http://patchwork-freedesktop.readthedocs.org/en/latest/testing.html
+Happy reading! </description>
+    </item>
+    
+    <item>
+      <title>Augmenting mailing-lists with Patchwork - Another try</title>
+      <link>https://dlespiau.github.io/posts/2016-02-13-augmenting-mailing-lists-with-patchwork---another-try/</link>
+      <pubDate>Sat, 13 Feb 2016 15:36:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2016-02-13-augmenting-mailing-lists-with-patchwork---another-try/</guid>
+      <description>The mailing-list problem
+Many software projects use mailing-lists, which usually means mailman, not only for discussions around that project, but also for code contributions. A lot of open source projects work that way, including the one I interact with the most, the Linux kernel. A contributor sends patches to a mailing list, these days using&amp;nbsp;git send-email, and waits for feedback or for his/her patches to be picked up for inclusion if fortunate enough.</description>
+    </item>
+    
+  </channel>
+</rss>

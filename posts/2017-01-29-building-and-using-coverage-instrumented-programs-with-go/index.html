@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="Building and using coverage-instrumented programs with Go">
+<meta itemprop="description" content="tl;dr&nbsp;We can create coverage-instrumented binaries, run them and aggregate the coverage data from running both the program and the unit tests.
+In the Go world, unit testing is tightly integrated with the go tool chain. Write some unit tests, run go test and tell anyone that will listen that you really hope to never have to deal with a build system for the rest of your life.
+Since Go 1.2 (Dec.">
+
+
+<meta itemprop="datePublished" content="2017-01-29T19:45:00&#43;00:00" />
+<meta itemprop="dateModified" content="2017-01-29T19:45:00&#43;00:00" />
+<meta itemprop="wordCount" content="1296">
+
+
+
+<meta itemprop="keywords" content="Go,cool hacks,Golang," />
+<meta property="og:title" content="Building and using coverage-instrumented programs with Go" />
+<meta property="og:description" content="tl;dr&nbsp;We can create coverage-instrumented binaries, run them and aggregate the coverage data from running both the program and the unit tests.
+In the Go world, unit testing is tightly integrated with the go tool chain. Write some unit tests, run go test and tell anyone that will listen that you really hope to never have to deal with a build system for the rest of your life.
+Since Go 1.2 (Dec." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dlespiau.github.io/posts/2017-01-29-building-and-using-coverage-instrumented-programs-with-go/" /><meta property="article:published_time" content="2017-01-29T19:45:00&#43;00:00"/>
+<meta property="article:modified_time" content="2017-01-29T19:45:00&#43;00:00"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Building and using coverage-instrumented programs with Go"/>
+<meta name="twitter:description" content="tl;dr&nbsp;We can create coverage-instrumented binaries, run them and aggregate the coverage data from running both the program and the unit tests.
+In the Go world, unit testing is tightly integrated with the go tool chain. Write some unit tests, run go test and tell anyone that will listen that you really hope to never have to deal with a build system for the rest of your life.
+Since Go 1.2 (Dec."/>
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>Building and using coverage-instrumented programs with Go</title>
+	<link rel="stylesheet" href="https://dlespiau.github.io/css/style.min.bf17d429527cc9978ec99e8d5e3a5319fb29fb7f783e39f2fbe1260fabfbb57c.css" integrity="sha256-vxfUKVJ8yZeOyZ6NXjpTGfsp+394Pjny++EmD6v7tXw=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://dlespiau.github.io/">Damien Lespiau</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="https://dlespiau.github.io/posts/">Blog</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://twitter.com/__damien__" target="_blank" rel="noopener" title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a><a href="https://github.com/dlespiau" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://dlespiau.github.io/posts/">Blog</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Jan 29, 2017</span></div>
+				<h1>Building and using coverage-instrumented programs with Go</h1>
+			</header>
+			<div class="content">
+				<div dir="ltr" style="text-align: left;" trbidi="on"><br /><b>tl;dr</b>&nbsp;We can create coverage-instrumented binaries, run them and aggregate the coverage data from running both the program and the unit tests.<br /><div style="text-align: center;"><br /></div>In the Go world, unit testing is <a href="https://golang.org/pkg/testing/">tightly integrated</a> with the go tool chain. Write some unit tests, run <code class="command">go test</code> and tell anyone that will listen that you really hope to never have to deal with a build system for the rest of your life.<br /><br />Since Go 1.2 (Dec. 2013), <code class="command">go test</code> has supported test coverage analysis: with the <code>‑cover</code> option it will tell you how much of the code is being exercised by the unit tests.<br /><br />So far, so good.<br /><br />I've been wanting to do something slightly different for some time though. Imagine you have a command line tool. I'd like to be able to run that tool with different options and inputs, check that everything is OK (using something like <a href="https://github.com/sstephenson/bats"><code>bats</code></a>) and gather coverage data from those runs. Even better, wouldn't be neat to merge the coverage from the unit tests with the one from those program runs and have an aggregated view of the code paths exercised by both kind of testing?<br /><h2 style="text-align: left;">A word about coverage in Go</h2><div>Coverage instrumentation in Go is done by rewriting the source of an application. The <code>cover</code> tool inserts code to increment a counter at the start of each <a href="https://en.wikipedia.org/wiki/Basic_block">basic block</a>, a different counter for each basic block of course. Some metadata is kept along side each of the counters: the location of the basic block (source file, start/end line &amp; columns) and the size of the basic block (number of statements).</div><div><br /></div><div>This rewriting is done automatically by <code>go test</code> when coverage information has been asked by the user (<code>go test -x</code> to see what's happening under the hood). <code>go test</code> then generates an instrumented <a href="https://golang.org/cmd/go/#hdr-Test_packages">test binary</a> and runs it.</div><div><br /></div><div>A more detailed explanation of the cover story can be found on the <a href="https://blog.golang.org/cover">Go blog</a>.</div><div><br /></div><div>Another interesting thing is that it's possible to ask <code>go test</code> to write out a file containing the coverage information with the <code>‑coverprofile</code> option. This file starts with the <i>coverage mode</i>, which is how the coverage counters are incremented. This is one of <i>set</i>, <i>count</i> or <i>atomic&nbsp;</i>(see <a href="https://blog.golang.org/cover">blog post</a> for details). The rest of the file is the list of basic blocks of the program with their metadata, one block per line:</div><div><br /></div><pre>github.com/clearcontainers/runtime/oci.go:241.29,244.9 3 4</pre><div style="text-align: left;"><br /></div><div style="text-align: left;">This describes one piece of code from <b>oci.go</b>, composed of <b>3</b>&nbsp;statements without branches, starting at line <b>241</b>, column <b>29</b> and finishing at line <b>244</b>, column <b>9</b>. This block has been reached <b>4</b> times during the execution of the test binary.</div><h2 style="text-align: left;">Generating coverage instrumented programs</h2><div>Now, what I really want to do is to compile my program with the coverage instrumentation, not just the test binary. I also want to get the coverage data written to disk when the program finishes.<br /><br />And that's when we have to start being creative.<br /><br />We're going to use <code>go test</code> to generate that instrumented program. It's possible to define a custom <code>TestMain</code> function, an entry point of a kind, for the test package. <code>TestMain</code> is often used to setup up the test environment before running the list of unit tests. We can hack it a bit to call our <code>main</code> function and jump to running our normal program instead of the tests! I ended up with something like this:<br /><br /><script src="https://gist.github.com/dlespiau/5224ee64f1ea401c00ccc852fc13afe1.js"></script><br />The current project I'm working on is called <code>cc-runtime</code>, an <a href="https://github.com/opencontainers/runtime-spec">OCI runtime</a> spawning virtual machines. It definitely deserves its own blog post, but for now, knowing the binary name is enough. Generating a coverage instrumented <code>cc-runtime</code> binary is just a matter of invoking <code>go test</code>:<br /><br /><pre>$ go test -o cc-runtime -covermode count</pre><br />I haven't used <i>atomic</i> as this binary is really a thin wrapper around a library and doesn't use may goroutines. I'm also assuming that the use of atomic operations in every branch a "quite a bit" higher then the non-atomic addition. I don't care too much if the counter is off by a bit, as long as it's strictly positive.<br /><br />We can run this binary just as if it were built with <code>go build</code>, except it's really a test binary and we have access to the same command line arguments as we would otherwise. In particular, we can ask to output the coverage profile.<br /><br /><pre>$ ./cc-runtime -test.coverprofile=list.cov list<br />[ outputs the list of containers ]</pre><br />And let's have a look at <code>list.cov</code>. Hang on... there's a problem, nothing was generated: we din't get the usual "coverage: xx.x% of statements" at the end of a <code>go test</code> run and there's no <code>list.cov</code> in the current directory. What's going on?<br /><br /></div><div>The testing package flushes the various profiles to disk <a href="https://github.com/golang/go/blob/master/src/testing/testing.go#L1061">after</a> running all the tests. The problem is that we don't run any test here, we just call main. Fortunately enough, the API to trigger a test run is <a href="https://godoc.org/testing#Main">semi-public</a>: it's not covered by the <code>go1</code> API guarantee and has "internal only" warnings. Not. Even. Scared. Hacking up a dummy test suite and running is easy enough:<br /><br /><script src="https://gist.github.com/dlespiau/c4263820c25a2aa4a59315f55c7739a6.js"></script><br />There is still one little detail left. We need to call this <code>FlushProfiles</code> function at the end of the program and that program could very well be using <code>os.Exit</code> anywhere. I couldn't find better than having a tiny <a href="https://github.com/dlespiau/covertool/blob/master/pkg/exit/exit.go">exit package</a>&nbsp;implementing the equivalent of the libc <code>atexit()</code> function and forbid direct use of <code>os.Exit</code> in favour of <code>exit.Exit()</code>. It's even <a href="https://github.com/dlespiau/covertool/blob/master/scripts/go-no-os-exit.sh">testable</a>.</div><h2 style="text-align: left;">Putting everything together</h2><div>It's now time for a full <a href="https://github.com/dlespiau/covertool/tree/master/examples/calc">example</a>. I have a small <code>calc</code> program that can compute additions and substractions.</div><br /><pre>$ calc add 4 8<br />12</pre><br />The code isn't exactly challenging:<br /><br /><script src="https://gist.github.com/dlespiau/9f1b4fca65147a06ed7a9e59aadc73c3.js"></script><br /><div>I've written some unit-tests for the <code>add</code> function only. We're going to run <code>calc</code> itself to cover the remaining statements. But first, let's see the unit tests code with both <code>TestAdd</code> and our hacked up <code>TestMain</code> function. I've swept the hacky bits away in a <a href="https://github.com/dlespiau/covertool/blob/master/pkg/cover/cover.go"><code>cover</code></a> package.<br /><br /><script src="https://gist.github.com/dlespiau/4d4b8dc2d1e09985beac950caeed195e.js"></script><br />Let's run the unit-tests, asking to save a <code>unit-tests.cov</code> profile.<br /><br /><pre>$ go test -covermode count -coverprofile unit-tests.cov<br />PASS<br />coverage: 7.1% of statements<br />ok   github.com/dlespiau/covertool/examples/calc 0.003s</pre><br />Huh. 7.1%. Well, we're only testing the 1 statement of the <code>add</code> function after all. It's time for the magic. Let's compile an instrumented calc:<br /><br /><pre>$ go test -o calc -covermode count</pre><br />And run <code>calc</code> a few times to exercise more code paths. For each run, we'll produce a coverage profile.<br /><br /><pre>$ ./calc -test.coverprofile=sub.cov sub 1 2<br />-1<br />$ covertool report sub.cov<br />coverage: 57.1% of statements<br /><br />$ ./calc -test.coverprofile=error1.cov foo<br />expected 3 arguments, got 1<br />$ covertool report error1.cov<br />coverage: 21.4% of statements<br /><br />$ ./calc -test.coverprofile=error2.cov mul 3 4<br />unknown operation: mul<br />$ covertool report error2.cov<br />coverage: 50.0% of statements<br /></pre><br />We want to aggregate those profiles into one single super-profile. While there are <a href="https://github.com/golang/go/commit/f39050c8ebf894ccedc0b99de96f7412be97af89">some hints</a> people are interested in merging profiles from several runs (that commit is in go 1.8), the cover tool doesn't seem to support these kind of things easily so I wrote a little utility to do it: <a href="https://github.com/dlespiau/covertool"><code>covertool</code></a><br /><br /><pre>$ covertool merge -o all.cov unit-tests.cov sub.cov error1.cov error2.cov</pre><br />Unfortunately again, I discovered <a href="https://github.com/golang/go/issues/20515">a bug</a> in Go's cover and so we need <a href="https://github.com/dlespiau/covertool"><code>covertool</code></a> to tell us the coverage of the aggregated profile:<br /><br /><pre>$ covertool report all.cov<br />coverage: 92.9% of statements</pre><br />Not Bad!<br /><br />Still not 100% though. Let's fire the HTML coverage viewer to see what we are missing:<br /><br /><pre>$ go tool cover -html=all.cov</pre><br /><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-j5ssZUYZfSE/WSxkK4m6n8I/AAAAAAAAA7M/E8dN060oMdIq9A0qpXSyJCPr7MpzwoiVQCLcB/s1600/Screenshot%2Bfrom%2B2017-05-29%2B19-06-34.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" data-original-height="741" data-original-width="1366" height="347" src="https://2.bp.blogspot.com/-j5ssZUYZfSE/WSxkK4m6n8I/AAAAAAAAA7M/E8dN060oMdIq9A0qpXSyJCPr7MpzwoiVQCLcB/s640/Screenshot%2Bfrom%2B2017-05-29%2B19-06-34.png" width="640" /></a></div><br />Oh, indeed, we're missing 1 statement. We never call <code>add</code> from the command line so that switch case is never covered. Good. Seems like everything is working as intended.<br /><br /></div><h2 style="text-align: left;">Here be dragons</h2><div>As fun as this is, it definitely feels like very few people are doing this kind of instrumented binaries. Everything is a bit rough around the edges. I may have missed something obvious, of course, but I'm sure the Internet will tell me if that's the case!</div><br />It'd be awesome if we could have something nicely integrated in the future.<br /><br /></div>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://dlespiau.github.io/tags/go">Go</a></span><span class="tag"><a href="https://dlespiau.github.io/tags/cool-hacks">cool hacks</a></span><span class="tag"><a href="https://dlespiau.github.io/tags/golang">Golang</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1296 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2017-01-29 19:45 &#43;0000</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="prev-post" href="https://dlespiau.github.io/posts/2016-02-15-continuous-testing-with-patchwork/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Continuous Testing with Patchwork</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="https://dlespiau.github.io/">Damien Lespiau</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://dlespiau.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="https://dlespiau.github.io/js/main.min.8f39f24808e9d0a9b02da58c2d2838da859dc0b7bdfadbdb1883aae8b6adacfe.js" integrity="sha256-jznySAjp0KmwLaWMLSg42oWdwLe9+tvbGIOq6LatrP4="></script>
+
+</body>
+
+</html>

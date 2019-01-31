@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="shave: making the autotools output sane">
+<meta itemprop="description" content="updated: Automake 1.11 has been release with &ldquo;silent rules&rdquo; support, a feature that supersedes the hack that shave is. If you can depend on automake 1.11 please consider using its silent rules rather than shave.
+updated: add some gtk-doc info
+updated: CXX support thanks to Tommi Komulainen
+shave
+Fed up with endless screens of libtool/automake output? Fed up with having to resort to -Werror to see warnings in your code? Then shave might be for you.">
+
+
+<meta itemprop="datePublished" content="2009-02-18T17:54:00&#43;00:00" />
+<meta itemprop="dateModified" content="2009-02-18T17:54:00&#43;00:00" />
+<meta itemprop="wordCount" content="523">
+
+
+
+<meta itemprop="keywords" content="cool hacks," />
+<meta property="og:title" content="shave: making the autotools output sane" />
+<meta property="og:description" content="updated: Automake 1.11 has been release with &ldquo;silent rules&rdquo; support, a feature that supersedes the hack that shave is. If you can depend on automake 1.11 please consider using its silent rules rather than shave.
+updated: add some gtk-doc info
+updated: CXX support thanks to Tommi Komulainen
+shave
+Fed up with endless screens of libtool/automake output? Fed up with having to resort to -Werror to see warnings in your code? Then shave might be for you." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dlespiau.github.io/posts/2009-02-18-shave-making-the-autotools-output-sane/" /><meta property="article:published_time" content="2009-02-18T17:54:00&#43;00:00"/>
+<meta property="article:modified_time" content="2009-02-18T17:54:00&#43;00:00"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="shave: making the autotools output sane"/>
+<meta name="twitter:description" content="updated: Automake 1.11 has been release with &ldquo;silent rules&rdquo; support, a feature that supersedes the hack that shave is. If you can depend on automake 1.11 please consider using its silent rules rather than shave.
+updated: add some gtk-doc info
+updated: CXX support thanks to Tommi Komulainen
+shave
+Fed up with endless screens of libtool/automake output? Fed up with having to resort to -Werror to see warnings in your code? Then shave might be for you."/>
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>shave: making the autotools output sane</title>
+	<link rel="stylesheet" href="https://dlespiau.github.io/css/style.min.bf17d429527cc9978ec99e8d5e3a5319fb29fb7f783e39f2fbe1260fabfbb57c.css" integrity="sha256-vxfUKVJ8yZeOyZ6NXjpTGfsp+394Pjny++EmD6v7tXw=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://dlespiau.github.io/">Damien Lespiau</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="https://dlespiau.github.io/posts/">Blog</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://twitter.com/__damien__" target="_blank" rel="noopener" title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a><a href="https://github.com/dlespiau" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://dlespiau.github.io/posts/">Blog</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Feb 18, 2009</span></div>
+				<h1>shave: making the autotools output sane</h1>
+			</header>
+			<div class="content">
+				<p><span style="color: #ff0000;">updated</span><span style="color: #ff0000;">:</span> Automake 1.11 has been release with &ldquo;silent rules&rdquo; support, a feature that supersedes the hack that shave is. If you can depend on automake 1.11 please consider using its silent rules rather than shave.<br /><span style="color: #ff0000;">updated:</span> add some gtk-doc info<br /><span style="color: #ff0000;">updated:</span> CXX support thanks to Tommi Komulainen<br /><br /><h3>shave</h3><br />Fed up with endless screens of libtool/automake output? Fed up with having to resort to -Werror to see warnings in your code? Then shave might be for you. shave transforms the messy output of autotools into a pretty Kbuild-like one (Kbuild is the Linux build system). It&rsquo;s composed of a m4 macro and 2 small shell scripts and it&rsquo;s available in a <a title="shave git repository" href="http://git.lespiau.name/cgit/shave/">git repository</a>.<br /><pre class="brush: text; gutter: true">git clone git://git.lespiau.name/shave</pre>Hopefully, in a few minutes, you should be able to see your project compile like this:<br /><pre class="brush: text; gutter: true">$ make<br />Making all in foo<br />Making all in internal<br />CC    internal-file0.o<br />LINK  libinternal.la<br />CC    lib-file0.o<br />CC    lib-file1.o<br />LINK  libfoo.la<br />Making all in tools<br />CC    tool0-tool0.o<br />LINK  tool0</pre>Just like Kbuild, shave supports outputting the underlying commands using:<br /><pre class="brush: text; gutter: true">$ make V=1</pre><br /><h3>Setup</h3><br /><ul><li>Put the two shell scripts shave.in and shave-libtool.in in the directory of your choice (it can be at the root of your autotooled project).</li><li>add shave and shave-libtool to AC_CONFIG_FILES</li><li>add shave.m4 either in acinclude.m4 or your macro directory</li><li>add a call to SHAVE_INIT just before AC_CONFIG_FILES/AC_OUTPUT. SHAVE_INIT takes one argument, the directory where shave and shave-libtool are.</li></ul><br /><h3>Custom rules</h3><br />Sometimes you have custom Makefile rules, e.g. to generate a small header, run glib-mkenums or glib-genmarshal. It would be nice to output a pretty &lsquo;GEN&rsquo; line. That&rsquo;s quite easy actually, just add few (portable!) lines at the top of your Makefile.am:<br /><pre class="brush: text; gutter: true">V         = @<br />Q         = $(V:1=)<br />QUIET_GEN = $(Q:@=@echo &#039;  GEN   &#039;$@;)</pre>and then it&rsquo;s just a matter of prepending $(QUIET_GEN) to the rule creating the file:<br /><pre class="brush: text; gutter: true">lib-file2.h: Makefile<br />$(QUIET_GEN)echo &quot;#define FOO_DEFINE 0xbabe&quot; &gt; lib-file2.h</pre><br /><h3>gtk-doc + shave</h3><br />gtk-doc + shave + libtool 1.x (2.x is fine) is known to have a small issue, <a title="bug #572396" href="http://bugzilla.gnome.org/show_bug.cgi?id=572396">a patch</a> is available. Meanwhile I suggest adding a few lines to your autogen.sh script.<br /><pre class="brush: text; gutter: true">sed -e &#039;s#) &ndash;mode=compile#) &ndash;tag=CC &ndash;mode=compile#&#039; gtk-doc.make &gt; gtk-doc.temp &lt;br /&gt;&amp;&amp; mv gtk-doc.temp gtk-doc.make<br />sed -e &#039;s#) &ndash;mode=link#) &ndash;tag=CC &ndash;mode=link#&#039; gtk-doc.make &gt; gtk-doc.temp &lt;br /&gt;&amp;&amp; mv gtk-doc.temp gtk-doc.make</pre><br /><h3>dolt + shave</h3><br />It&rsquo;s possible to use <a title="dolt" href="http://dolt.freedesktop.org/">dolt</a> in conjunction with shave with a <a title="patch to make dolt work with shave" href="http://git.lespiau.name/cgit/dolt/commit/?h=shave-dolt">surprisingly small patch</a> to dolt.<br /><h3>Real world example: Clutter</h3><br /><pre class="brush: text; gutter: true">$ make<br />GEN   stamp-clutter-marshal.h<br />GEN   clutter-marshal.c<br />GEN   stamp-clutter-enum-types.h<br />Making all in cogl<br />Making all in common<br />CC    cogl-util.o<br />CC    cogl-bitmap.o<br />CC    cogl-bitmap-fallback.o<br />CC    cogl-primitives.o<br />CC    cogl-bitmap-pixbuf.o<br />CC    cogl-clip-stack.o<br />CC    cogl-fixed.o<br />CC    cogl-color.o<br />cogl-color.c: In function ‘cogl_set_source_color4ub’:<br />cogl-color.c:141: warning: implicit declaration of function ‘cogl_set_source_color’<br />CC    cogl-vertex-buffer.o<br />CC    cogl-matrix.o<br />CC    cogl-material.o<br />LINK  libclutter-cogl-common.la<br />[&hellip;]</pre><br />Eh! now we can see a warning there!<br /><br /><h3>TODO</h3><br />This is a first release, shave has not been widely tested aka it may not work for you!<br /><ul><li>test it with a wider range of automake/libtool versions</li><li>shave won&rsquo;t work without AC_CONFIG_HEADERS due to shell quoting problems</li><li>see what can be done for make install/dist (they are prettier thanks to make -s, but we probably miss a few actions)</li><li>there is a &lsquo;-s&rsquo; hardcoded in MAKEFLAGS,  I have to find a way to make it more flexible</li></ul></p>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://dlespiau.github.io/tags/cool-hacks">cool hacks</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>523 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2009-02-18 17:54 &#43;0000</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://dlespiau.github.io/posts/2009-02-23-after-shave/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>After-shave</span>
+			</a>
+			<a class="prev-post" href="https://dlespiau.github.io/posts/2009-02-10-adv-adv-is-a-dependency-viewer/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>ADV: ADV is a Dependency Viewer</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="https://dlespiau.github.io/">Damien Lespiau</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://dlespiau.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="https://dlespiau.github.io/js/main.min.8f39f24808e9d0a9b02da58c2d2838da859dc0b7bdfadbdb1883aae8b6adacfe.js" integrity="sha256-jznySAjp0KmwLaWMLSg42oWdwLe9+tvbGIOq6LatrP4="></script>
+
+</body>
+
+</html>

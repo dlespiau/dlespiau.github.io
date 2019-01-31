@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Pneu on Damien Lespiau</title>
+    <link>https://dlespiau.github.io/tags/pneu/</link>
+    <description>Recent content in Pneu on Damien Lespiau</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-GB</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Sun, 27 Jan 2008 19:16:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://dlespiau.github.io/tags/pneu/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>libpneu first import</title>
+      <link>https://dlespiau.github.io/posts/2008-01-27-libpneu-first-import/</link>
+      <pubDate>Sun, 27 Jan 2008 19:16:00 +0000</pubDate>
+      
+      <guid>https://dlespiau.github.io/posts/2008-01-27-libpneu-first-import/</guid>
+      <description>Waw, definitely hard to keep a decent pace at posting news in my blog. Nevertheless, a first import of libpneu has reached my public git repository. libpneu is an effort to make a tracing library that I could use in every single project I start. Basically, you put tracing points in your programs and libpneu prints them whenever you need to know what is happening. Different backends can be used to display traces and debug messages, from printing them to stdout, to sending them over an UDP socket.</description>
+    </item>
+    
+  </channel>
+</rss>

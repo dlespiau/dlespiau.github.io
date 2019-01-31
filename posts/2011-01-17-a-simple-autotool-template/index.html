@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="A simple autotool template">
+<meta itemprop="description" content="Every now and then, you feel a big urge to start hacking on a small thingy and need to create Makefiles for it. Turns out that the autotools won&#39;t be that intrusive when we are talking about small programs and you get do a reasonable job with a few lines, first the configure.ac file:# autoconf
+AC_PREREQ(2.59)
+AC_INIT([fart], [0.0.1], [damien.lespiau@gmail.com])
+AC_CONFIG_MACRO_DIR([build])
+AC_CONFIG_AUX_DIR([build])
+AC_CONFIG_SRCDIR([fart.c])
+AC_CONFIG_HEADERS([config.h])
+# automake
+AM_INIT_AUTOMAKE([1.11 -Wall foreign no-define])
+AM_SILENT_RULES([yes])">
+
+
+<meta itemprop="datePublished" content="2011-01-17T01:25:00&#43;00:00" />
+<meta itemprop="dateModified" content="2011-01-17T01:25:00&#43;00:00" />
+<meta itemprop="wordCount" content="234">
+
+
+
+<meta itemprop="keywords" content="misc," />
+<meta property="og:title" content="A simple autotool template" />
+<meta property="og:description" content="Every now and then, you feel a big urge to start hacking on a small thingy and need to create Makefiles for it. Turns out that the autotools won&#39;t be that intrusive when we are talking about small programs and you get do a reasonable job with a few lines, first the configure.ac file:# autoconf
+AC_PREREQ(2.59)
+AC_INIT([fart], [0.0.1], [damien.lespiau@gmail.com])
+AC_CONFIG_MACRO_DIR([build])
+AC_CONFIG_AUX_DIR([build])
+AC_CONFIG_SRCDIR([fart.c])
+AC_CONFIG_HEADERS([config.h])
+# automake
+AM_INIT_AUTOMAKE([1.11 -Wall foreign no-define])
+AM_SILENT_RULES([yes])" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://dlespiau.github.io/posts/2011-01-17-a-simple-autotool-template/" /><meta property="article:published_time" content="2011-01-17T01:25:00&#43;00:00"/>
+<meta property="article:modified_time" content="2011-01-17T01:25:00&#43;00:00"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="A simple autotool template"/>
+<meta name="twitter:description" content="Every now and then, you feel a big urge to start hacking on a small thingy and need to create Makefiles for it. Turns out that the autotools won&#39;t be that intrusive when we are talking about small programs and you get do a reasonable job with a few lines, first the configure.ac file:# autoconf
+AC_PREREQ(2.59)
+AC_INIT([fart], [0.0.1], [damien.lespiau@gmail.com])
+AC_CONFIG_MACRO_DIR([build])
+AC_CONFIG_AUX_DIR([build])
+AC_CONFIG_SRCDIR([fart.c])
+AC_CONFIG_HEADERS([config.h])
+# automake
+AM_INIT_AUTOMAKE([1.11 -Wall foreign no-define])
+AM_SILENT_RULES([yes])"/>
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>A simple autotool template</title>
+	<link rel="stylesheet" href="https://dlespiau.github.io/css/style.min.bf17d429527cc9978ec99e8d5e3a5319fb29fb7f783e39f2fbe1260fabfbb57c.css" integrity="sha256-vxfUKVJ8yZeOyZ6NXjpTGfsp+394Pjny++EmD6v7tXw=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://dlespiau.github.io/">Damien Lespiau</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="https://dlespiau.github.io/posts/">Blog</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://twitter.com/__damien__" target="_blank" rel="noopener" title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a><a href="https://github.com/dlespiau" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://dlespiau.github.io/posts/">Blog</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Jan 17, 2011</span></div>
+				<h1>A simple autotool template</h1>
+			</header>
+			<div class="content">
+				<div dir="ltr" style="text-align: left;" trbidi="on">Every now and then, you feel a big urge to start hacking on a small thingy and need to create Makefiles for it. Turns out that the autotools won't be that intrusive when we are talking about small programs and you get do a reasonable job with a few lines, first the <code class="filename">configure.ac</code> file:<pre class="brush: text; gutter: true"># autoconf<br />AC_PREREQ(2.59)<br />AC_INIT([fart], [0.0.1], [damien.lespiau@gmail.com])<br />AC_CONFIG_MACRO_DIR([build])<br />AC_CONFIG_AUX_DIR([build])<br />AC_CONFIG_SRCDIR([fart.c])<br />AC_CONFIG_HEADERS([config.h])<br /><br /># automake<br />AM_INIT_AUTOMAKE([1.11 -Wall foreign no-define])<br />AM_SILENT_RULES([yes])<br /><br /># Check for programs<br />AC_PROG_CC<br /><br /># Check for header files<br />AC_HEADER_STDC<br /><br />AS_COMPILER_FLAGS([WARNING_CFLAGS],<br />["-Wall -Wshadow -Wcast-align -Wno-uninitialized<br />-Wno-strict-aliasing -Wempty-body -Wformat -Wformat-security<br />-Winit-self -Wdeclaration-after-statement -Wvla<br />-Wpointer-arith"])<br /><br />PKG_CHECK_MODULES([GLIB], [glib-2.0 &gt;= 2.24])<br /><br />AC_OUTPUT([<br />Makefile<br />])</pre>and then <code class="filename">Makefile.am</code>:<pre class="brush: text; gutter: true">ACLOCAL_AMFLAGS = -I build ${ACLOCAL_FLAGS}<br /><br />bin_PROGRAMS = fart<br /><br />fart_SOURCES = fart.c<br />fart_CFLAGS  = $(WARNING_CFLAGS) $(GLIB_CFLAGS)<br />fart_LDADD   = $(GLIB_LIBS)</pre>After that, it's just a matter of running <code class="command">autoreconf</code><pre class="brush: text; gutter: true">$ autoreconf -i</pre>and you are all set!<br />So, what do you get for this amount of lines?<ul><li>The usual set of automake targets, handy! ("make tags" is so under used!) and bonus features (out of tree builds, extra rules to reconfigure/rebuild the Makefiles on changes in configure.ac/Makefile.an, ...)</li><li>Trying to make the autoconf/automake discreet (putting auxiliary files out of the way, silence mode, automake for non GNU projects)</li><li>Some decent warning flags (tweak to your liking!)</li><li>autoreconf cooperating with aclocal thanks to ACLOCAL_AMFLAGS and coping with non standard locations for system m4 macros</li></ul>I'll maintain a <a href="http://git.lespiau.name/cgit/program-template-simple/" title="A simple autotool template">git tree</a> to help bootstrap my next small hacks, feel free to use it as well!</div>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://dlespiau.github.io/tags/misc">misc</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>234 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2011-01-17 01:25 &#43;0000</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://dlespiau.github.io/posts/2011-01-31-clutter-on-android-first-results/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Clutter on Android: first results</span>
+			</a>
+			<a class="prev-post" href="https://dlespiau.github.io/posts/2011-01-10-a-simple-transition-effect-with-clutter/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>A simple transition effect with Clutter</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="https://dlespiau.github.io/">Damien Lespiau</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://dlespiau.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="https://dlespiau.github.io/js/main.min.8f39f24808e9d0a9b02da58c2d2838da859dc0b7bdfadbdb1883aae8b6adacfe.js" integrity="sha256-jznySAjp0KmwLaWMLSg42oWdwLe9+tvbGIOq6LatrP4="></script>
+
+</body>
+
+</html>
