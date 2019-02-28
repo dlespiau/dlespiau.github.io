@@ -2,32 +2,32 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Unix on Damien Lespiau</title>
-    <link>https://dlespiau.github.io/tags/unix/</link>
+    <link>https://damien.lespiau.name/tags/unix/</link>
     <description>Recent content in Unix on Damien Lespiau</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-GB</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
     <lastBuildDate>Fri, 05 Dec 2014 18:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://dlespiau.github.io/tags/unix/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://damien.lespiau.name/tags/unix/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Working in a separate prefix</title>
-      <link>https://dlespiau.github.io/posts/2014-12-05-working-in-a-separate-prefix/</link>
+      <link>https://damien.lespiau.name/posts/2014-12-05-working-in-a-separate-prefix/</link>
       <pubDate>Fri, 05 Dec 2014 18:00:00 +0000</pubDate>
       
-      <guid>https://dlespiau.github.io/posts/2014-12-05-working-in-a-separate-prefix/</guid>
+      <guid>https://damien.lespiau.name/posts/2014-12-05-working-in-a-separate-prefix/</guid>
       <description>I&#39;ve been surprised in the past to discover that even some seasoned engineers didn&#39;t know how to use the autotools prefix feature. A sign they&#39;ve been lucky enough and didn&#39;t have to deal with Autotools too much. Here&#39;s my attempt to provide some introduction to ./configure --prefix.
 Working with or in &#34;a separate prefix&#34; is working with libraries and binaries (well, anything produced by &#39;make install&#39; in an autotooled project really) installed in a different directory than the system-wide ones (/usr or even /usr/local that can become quite messy).</description>
     </item>
     
     <item>
       <title>Working on more than one line with sed&#39;s &#39;N&#39; command</title>
-      <link>https://dlespiau.github.io/posts/2013-01-03-working-on-more-than-one-line-with-seds-n-command/</link>
+      <link>https://damien.lespiau.name/posts/2013-01-03-working-on-more-than-one-line-with-seds-n-command/</link>
       <pubDate>Thu, 03 Jan 2013 14:24:00 +0000</pubDate>
       
-      <guid>https://dlespiau.github.io/posts/2013-01-03-working-on-more-than-one-line-with-seds-n-command/</guid>
+      <guid>https://damien.lespiau.name/posts/2013-01-03-working-on-more-than-one-line-with-seds-n-command/</guid>
       <description>Yesterday I was asked to help solving a small sed problem. Considering that file (don&#39;t look too closely on the engineering of the defined elements):
 &amp;lt;root&amp;gt;
 &amp;lt;key&amp;gt;key0&amp;lt;/key&amp;gt;
@@ -42,10 +42,10 @@ Sed maintains a buffer called the &#34;pattern space&#34; and processes commands
     
     <item>
       <title>Extracting part of files with sed</title>
-      <link>https://dlespiau.github.io/posts/2012-01-10-extracting-part-of-files-with-sed/</link>
+      <link>https://damien.lespiau.name/posts/2012-01-10-extracting-part-of-files-with-sed/</link>
       <pubDate>Tue, 10 Jan 2012 14:34:00 +0000</pubDate>
       
-      <guid>https://dlespiau.github.io/posts/2012-01-10-extracting-part-of-files-with-sed/</guid>
+      <guid>https://damien.lespiau.name/posts/2012-01-10-extracting-part-of-files-with-sed/</guid>
       <description>For reference for my future self, a few handy sed commands. Let&amp;rsquo;s consider this file:$ cat test-sed
 First line
 Second line

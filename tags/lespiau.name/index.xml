@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Lespiau.name on Damien Lespiau</title>
-    <link>https://dlespiau.github.io/tags/lespiau.name/</link>
+    <link>https://damien.lespiau.name/tags/lespiau.name/</link>
     <description>Recent content in Lespiau.name on Damien Lespiau</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-GB</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
     <lastBuildDate>Sun, 13 Jan 2008 16:02:00 +0000</lastBuildDate>
     
-	<atom:link href="https://dlespiau.github.io/tags/lespiau.name/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://damien.lespiau.name/tags/lespiau.name/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Survival Kit</title>
-      <link>https://dlespiau.github.io/posts/2008-01-13-survival-kit/</link>
+      <link>https://damien.lespiau.name/posts/2008-01-13-survival-kit/</link>
       <pubDate>Sun, 13 Jan 2008 16:02:00 +0000</pubDate>
       
-      <guid>https://dlespiau.github.io/posts/2008-01-13-survival-kit/</guid>
+      <guid>https://damien.lespiau.name/posts/2008-01-13-survival-kit/</guid>
       <description>It&amp;rsquo;s time to start putting something on the site. It&amp;rsquo;s just a bunch of dot files (.vimrc, .gitconfig, &amp;hellip;) in a git repository. I&amp;rsquo;ve called it my Survival Kit as these are files I cannot work without. I hope to make the repository more useful over time, adding simple skeletons to start (DocBook, C, Java, C#, &amp;hellip;) projects.</description>
     </item>
     
     <item>
       <title>Hello world!</title>
-      <link>https://dlespiau.github.io/posts/2008-01-05-hello-world/</link>
+      <link>https://damien.lespiau.name/posts/2008-01-05-hello-world/</link>
       <pubDate>Sat, 05 Jan 2008 18:45:00 +0000</pubDate>
       
-      <guid>https://dlespiau.github.io/posts/2008-01-05-hello-world/</guid>
+      <guid>https://damien.lespiau.name/posts/2008-01-05-hello-world/</guid>
       <description>OK. Let&amp;rsquo;s try to blog a little about what I do. Nothing fancy and mostly computer-related stuff but I hope it can be of any help to someone, somewhere, someday.</description>
     </item>
     

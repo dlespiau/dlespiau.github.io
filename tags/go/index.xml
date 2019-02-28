@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Go on Damien Lespiau</title>
-    <link>https://dlespiau.github.io/tags/go/</link>
+    <link>https://damien.lespiau.name/tags/go/</link>
     <description>Recent content in Go on Damien Lespiau</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-GB</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
     <lastBuildDate>Sun, 29 Jan 2017 19:45:00 +0000</lastBuildDate>
     
-	<atom:link href="https://dlespiau.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://damien.lespiau.name/tags/go/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Building and using coverage-instrumented programs with Go</title>
-      <link>https://dlespiau.github.io/posts/2017-01-29-building-and-using-coverage-instrumented-programs-with-go/</link>
+      <link>https://damien.lespiau.name/posts/2017-01-29-building-and-using-coverage-instrumented-programs-with-go/</link>
       <pubDate>Sun, 29 Jan 2017 19:45:00 +0000</pubDate>
       
-      <guid>https://dlespiau.github.io/posts/2017-01-29-building-and-using-coverage-instrumented-programs-with-go/</guid>
+      <guid>https://damien.lespiau.name/posts/2017-01-29-building-and-using-coverage-instrumented-programs-with-go/</guid>
       <description>tl;dr&amp;nbsp;We can create coverage-instrumented binaries, run them and aggregate the coverage data from running both the program and the unit tests.
 In the Go world, unit testing is tightly integrated with the go tool chain. Write some unit tests, run go test and tell anyone that will listen that you really hope to never have to deal with a build system for the rest of your life.
 Since Go 1.2 (Dec.</description>

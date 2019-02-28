@@ -2,22 +2,22 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Android on Damien Lespiau</title>
-    <link>https://dlespiau.github.io/tags/android/</link>
+    <link>https://damien.lespiau.name/tags/android/</link>
     <description>Recent content in Android on Damien Lespiau</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-GB</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
     <lastBuildDate>Mon, 31 Jan 2011 15:41:00 +0000</lastBuildDate>
     
-	<atom:link href="https://dlespiau.github.io/tags/android/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://damien.lespiau.name/tags/android/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Clutter on Android: first results</title>
-      <link>https://dlespiau.github.io/posts/2011-01-31-clutter-on-android-first-results/</link>
+      <link>https://damien.lespiau.name/posts/2011-01-31-clutter-on-android-first-results/</link>
       <pubDate>Mon, 31 Jan 2011 15:41:00 +0000</pubDate>
       
-      <guid>https://dlespiau.github.io/posts/2011-01-31-clutter-on-android-first-results/</guid>
+      <guid>https://damien.lespiau.name/posts/2011-01-31-clutter-on-android-first-results/</guid>
       <description>With the release of Android 2.3, there&#39;s a decent way to integrate native applications with the NativeActivity class, an EGL library, and some C API to expose events, main loop, etc. So? how about porting Clutter to it now that it looks actually feasible? After a few days of work, the first results are there, quite promising!
 
 There&#39;s still a fairly large number of items in my TODO before being happy with the state of this work, the most prominent items are:</description>

@@ -3,268 +3,268 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2017-01-29-building-and-using-coverage-instrumented-programs-with-go/</loc>
+    <loc>https://damien.lespiau.name/posts/2017-01-29-building-and-using-coverage-instrumented-programs-with-go/</loc>
     <lastmod>2017-01-29T19:45:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2016-02-15-continuous-testing-with-patchwork/</loc>
+    <loc>https://damien.lespiau.name/posts/2016-02-15-continuous-testing-with-patchwork/</loc>
     <lastmod>2016-02-15T18:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2016-02-13-augmenting-mailing-lists-with-patchwork---another-try/</loc>
+    <loc>https://damien.lespiau.name/posts/2016-02-13-augmenting-mailing-lists-with-patchwork-another-try/</loc>
     <lastmod>2016-02-13T15:36:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2016-01-03-testing-for-pending-migrations-in-django/</loc>
+    <loc>https://damien.lespiau.name/posts/2016-01-03-testing-for-pending-migrations-in-django/</loc>
     <lastmod>2016-01-03T18:09:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2014-12-05-working-in-a-separate-prefix/</loc>
+    <loc>https://damien.lespiau.name/posts/2014-12-05-working-in-a-separate-prefix/</loc>
     <lastmod>2014-12-05T18:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2014-01-20-git-commit---fixup-and-git-rebase--i---autosquash/</loc>
+    <loc>https://damien.lespiau.name/posts/2014-01-20-git-commit-fixup-and-git-rebase-i-autosquash/</loc>
     <lastmod>2014-01-20T11:18:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2013-01-13-a-git-pre-commit-hook-to-check-the-year-of-copyright-notices/</loc>
+    <loc>https://damien.lespiau.name/posts/2013-01-13-a-git-pre-commit-hook-to-check-the-year-of-copyright-notices/</loc>
     <lastmod>2013-01-13T21:39:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2013-01-03-working-on-more-than-one-line-with-seds-n-command/</loc>
+    <loc>https://damien.lespiau.name/posts/2013-01-03-working-on-more-than-one-line-with-seds-n-command/</loc>
     <lastmod>2013-01-03T14:24:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2013-01-02-hdmi-stereo-3d--kms/</loc>
+    <loc>https://damien.lespiau.name/posts/2013-01-02-hdmi-stereo-3d-kms/</loc>
     <lastmod>2013-01-02T19:38:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2012-01-10-extracting-part-of-files-with-sed/</loc>
+    <loc>https://damien.lespiau.name/posts/2012-01-10-extracting-part-of-files-with-sed/</loc>
     <lastmod>2012-01-10T14:34:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2011-01-31-clutter-on-android-first-results/</loc>
+    <loc>https://damien.lespiau.name/posts/2011-01-31-clutter-on-android-first-results/</loc>
     <lastmod>2011-01-31T15:41:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2011-01-17-a-simple-autotool-template/</loc>
+    <loc>https://damien.lespiau.name/posts/2011-01-17-a-simple-autotool-template/</loc>
     <lastmod>2011-01-17T01:25:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2011-01-10-a-simple-transition-effect-with-clutter/</loc>
+    <loc>https://damien.lespiau.name/posts/2011-01-10-a-simple-transition-effect-with-clutter/</loc>
     <lastmod>2011-01-10T15:06:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2010-11-16-the-gstreamer-conference-from-a-clutter-point-of-view/</loc>
+    <loc>https://damien.lespiau.name/posts/2010-11-16-the-gstreamer-conference-from-a-clutter-point-of-view/</loc>
     <lastmod>2010-11-16T19:30:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2010-03-23-using-glib.py-and-gobject.py-gdb-scripts/</loc>
+    <loc>https://damien.lespiau.name/posts/2010-03-23-using-glib.py-and-gobject.py-gdb-scripts/</loc>
     <lastmod>2010-03-23T20:58:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2010-02-03-as_am_stfu/</loc>
+    <loc>https://damien.lespiau.name/posts/2010-02-03-as_am_stfu/</loc>
     <lastmod>2010-02-03T15:04:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2010-01-28-g_object_notify_by_pspec/</loc>
+    <loc>https://damien.lespiau.name/posts/2010-01-28-g_object_notify_by_pspec/</loc>
     <lastmod>2010-01-28T14:30:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2010-01-03-learning-how-to-draw/</loc>
+    <loc>https://damien.lespiau.name/posts/2010-01-03-learning-how-to-draw/</loc>
     <lastmod>2010-01-03T18:35:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2009-12-07-aligning-c-function-parameters-with-vim/</loc>
+    <loc>https://damien.lespiau.name/posts/2009-12-07-aligning-c-function-parameters-with-vim/</loc>
     <lastmod>2009-12-07T12:56:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2009-03-18-per-project-.vimrc/</loc>
+    <loc>https://damien.lespiau.name/posts/2009-03-18-per-project-.vimrc/</loc>
     <lastmod>2009-03-18T22:52:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2009-02-24-still-some-hair-left/</loc>
+    <loc>https://damien.lespiau.name/posts/2009-02-24-still-some-hair-left/</loc>
     <lastmod>2009-02-24T11:11:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2009-02-23-after-shave/</loc>
+    <loc>https://damien.lespiau.name/posts/2009-02-23-after-shave/</loc>
     <lastmod>2009-02-23T01:09:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2009-02-18-shave-making-the-autotools-output-sane/</loc>
+    <loc>https://damien.lespiau.name/posts/2009-02-18-shave-making-the-autotools-output-sane/</loc>
     <lastmod>2009-02-18T17:54:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2009-02-10-adv-adv-is-a-dependency-viewer/</loc>
+    <loc>https://damien.lespiau.name/posts/2009-02-10-adv-adv-is-a-dependency-viewer/</loc>
     <lastmod>2009-02-10T13:25:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2009-02-10-vim-macro-for-change-log-entry-in-.spec-files/</loc>
+    <loc>https://damien.lespiau.name/posts/2009-02-10-vim-macro-for-change-log-entry-in-.spec-files/</loc>
     <lastmod>2009-02-10T12:38:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2009-01-21-cogl--js--love/</loc>
+    <loc>https://damien.lespiau.name/posts/2009-01-21-cogl-js-love/</loc>
     <lastmod>2009-01-21T17:59:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2009-01-13-shave-0.1.0/</loc>
+    <loc>https://damien.lespiau.name/posts/2009-01-13-shave-0.1.0/</loc>
     <lastmod>2009-01-13T12:22:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2009-01-06-blending-two-rgba-5551-layers/</loc>
+    <loc>https://damien.lespiau.name/posts/2009-01-06-blending-two-rgba-5551-layers/</loc>
     <lastmod>2009-01-06T18:59:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2008-01-29-poulpy-0.1-is-out-/</loc>
+    <loc>https://damien.lespiau.name/posts/2008-01-29-poulpy-0.1-is-out-/</loc>
     <lastmod>2008-01-29T02:31:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2008-01-27-libpneu-first-import/</loc>
+    <loc>https://damien.lespiau.name/posts/2008-01-27-libpneu-first-import/</loc>
     <lastmod>2008-01-27T19:16:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2008-01-13-survival-kit/</loc>
+    <loc>https://damien.lespiau.name/posts/2008-01-13-survival-kit/</loc>
     <lastmod>2008-01-13T16:02:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/2008-01-05-hello-world/</loc>
+    <loc>https://damien.lespiau.name/posts/2008-01-05-hello-world/</loc>
     <lastmod>2008-01-05T18:45:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/</loc>
+    <loc>https://damien.lespiau.name/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/tags/android/</loc>
+    <loc>https://damien.lespiau.name/tags/android/</loc>
     <lastmod>2011-01-31T15:41:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/tags/clutter/</loc>
+    <loc>https://damien.lespiau.name/tags/clutter/</loc>
     <lastmod>2011-01-31T15:41:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/tags/cool-hacks/</loc>
+    <loc>https://damien.lespiau.name/tags/cool-hacks/</loc>
     <lastmod>2017-01-29T19:45:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/</loc>
+    <loc>https://damien.lespiau.name/</loc>
     <lastmod>2017-01-29T19:45:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/tags/drawing/</loc>
+    <loc>https://damien.lespiau.name/tags/drawing/</loc>
     <lastmod>2010-01-03T18:35:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/tags/gnome/</loc>
+    <loc>https://damien.lespiau.name/tags/gnome/</loc>
     <lastmod>2010-11-16T19:30:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/tags/go/</loc>
+    <loc>https://damien.lespiau.name/tags/go/</loc>
     <lastmod>2017-01-29T19:45:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/tags/golang/</loc>
+    <loc>https://damien.lespiau.name/tags/golang/</loc>
     <lastmod>2017-01-29T19:45:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/tags/kernel/</loc>
+    <loc>https://damien.lespiau.name/tags/kernel/</loc>
     <lastmod>2014-01-20T11:18:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/tags/lespiau.name/</loc>
+    <loc>https://damien.lespiau.name/tags/lespiau.name/</loc>
     <lastmod>2008-01-13T16:02:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/tags/misc/</loc>
+    <loc>https://damien.lespiau.name/tags/misc/</loc>
     <lastmod>2014-12-05T18:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/tags/patchwork/</loc>
+    <loc>https://damien.lespiau.name/tags/patchwork/</loc>
     <lastmod>2016-02-15T18:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/tags/pneu/</loc>
+    <loc>https://damien.lespiau.name/tags/pneu/</loc>
     <lastmod>2008-01-27T19:16:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/posts/</loc>
+    <loc>https://damien.lespiau.name/posts/</loc>
     <lastmod>2017-01-29T19:45:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/tags/poulpy/</loc>
+    <loc>https://damien.lespiau.name/tags/poulpy/</loc>
     <lastmod>2008-01-29T02:31:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/tags/</loc>
+    <loc>https://damien.lespiau.name/tags/</loc>
     <lastmod>2011-01-31T15:41:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://dlespiau.github.io/tags/unix/</loc>
+    <loc>https://damien.lespiau.name/tags/unix/</loc>
     <lastmod>2014-12-05T18:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
