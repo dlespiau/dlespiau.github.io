@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
 		<title>Posts on Damien Lespiau</title>
@@ -7,8 +6,320 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-GB</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Sun, 29 Jan 2017 19:45:00 +0000</lastBuildDate>
+		<lastBuildDate>Wed, 12 Jun 2019 10:21:00 +0000</lastBuildDate>
 		<atom:link href="https://damien.lespiau.name/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>jk - Configuration as code with TypeScript</title>
+			<link>https://damien.lespiau.name/posts/2019-06-06-jk-configuration-as-code/</link>
+			<pubDate>Wed, 12 Jun 2019 10:21:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2019-06-06-jk-configuration-as-code/</guid>
+			<description>Of all the problems we have confronted, the ones over which the most brain power, ink, and code have been spilled are related to managing configurations — Borg, Omega, and Kubernetes - Lessons learned from three container-management systems over a decade
+ This post is the first of a series introducing jk. We will start the series by showing a concrete example of what jk can do for you.</description>
+			<content type="html"><![CDATA[
+
+<blockquote>
+<p><strong>Of all the problems we have confronted, the ones over which the most brain
+power, ink, and code have been spilled are related to managing
+configurations</strong> — <a href="https://queue.acm.org/detail.cfm?id=2898444" target="_blank">Borg, Omega, and Kubernetes - Lessons learned from three
+container-management systems over a decade</a></p>
+</blockquote>
+
+<p>This post is the first of a series introducing <a href="https://github.com/jkcfg/jk" target="_blank"><code>jk</code></a>. We will start the
+series by showing a concrete example of what <a href="https://github.com/jkcfg/jk" target="_blank"><code>jk</code></a> can do for you.</p>
+
+<p><a href="https://github.com/jkcfg/jk" target="_blank"><code>jk</code></a> is a javascript runtime tailored for writing configuration files.
+The abstraction and expressive power of a programming language makes writing
+configuration easier and more maintainable by allowing developers to think at
+a higher level.</p>
+
+<p>Let&rsquo;s pretend we want to deploy a <code>billing</code> micro-service on a Kubernetes
+cluster. This micro-service could be defined as:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">service<span class="p">:</span><span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">  </span>description<span class="p">:</span><span class="w"> </span>Provides<span class="w"> </span>the<span class="w"> </span>/api/billing<span class="w"> </span>endpoints<span class="w"> </span>for<span class="w"> </span>frontend.<span class="w">
+</span><span class="w">  </span>maintainer<span class="p">:</span><span class="w"> </span>damien@weave.works<span class="w">
+</span><span class="w">  </span>namespace<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">  </span>port<span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span><span class="w">  </span>image<span class="p">:</span><span class="w"> </span>quay.io/acmecorp/billing<span class="p">:</span>master-fd986f62<span class="w">
+</span><span class="w">  </span>ingress<span class="p">:</span><span class="w">
+</span><span class="w">    </span>path<span class="p">:</span><span class="w"> </span>/api/billing<span class="w">
+</span><span class="w">  </span>dashboards<span class="p">:</span><span class="w">
+</span><span class="w">    </span>-<span class="w"> </span>service.RPS.HTTP<span class="w">
+</span><span class="w">  </span>alerts<span class="p">:</span><span class="w">
+</span><span class="w">    </span>-<span class="w"> </span>service.RPS.HTTP.HighErrorRate</code></pre></div>
+<p>From this simple, reduced definition of what a micro-service is, we can
+generate:</p>
+
+<ul>
+<li>Kubernetes <code>Namespace</code>, <code>Deployment</code>, <code>Service</code> and <code>Ingress</code> objects.</li>
+<li>A <code>ConfigMap</code> with dashboard definitions that grafana can detect and load.</li>
+<li>Alerts for Prometheus using the <code>PrometheusRule</code> custom resource defined
+by the <a href="https://github.com/coreos/prometheus-operator" target="_blank">Prometheus operator</a>.</li>
+</ul>
+
+<div class='tabs'>
+  <ul class="nav nav-tabs"></ul>
+  <div class="tab-content">
+  <div class="tab-pane" title="billing-ns.yaml">
+ <div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">apiVersion<span class="p">:</span><span class="w"> </span>v1<span class="w">
+</span><span class="w"></span>kind<span class="p">:</span><span class="w"> </span>Namespace<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>billing</code></pre></div>
+</div>
+
+  <div class="tab-pane" title="billing-deploy.yaml">
+ <div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">apiVersion<span class="p">:</span><span class="w"> </span>apps/v1<span class="w">
+</span><span class="w"></span>kind<span class="p">:</span><span class="w"> </span>Deployment<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>labels<span class="p">:</span><span class="w">
+</span><span class="w">    </span>app<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">  </span>namespace<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w"></span>spec<span class="p">:</span><span class="w">
+</span><span class="w">  </span>revisionHistoryLimit<span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
+</span><span class="w">  </span>strategy<span class="p">:</span><span class="w">
+</span><span class="w">    </span>rollingUpdate<span class="p">:</span><span class="w">
+</span><span class="w">      </span>maxSurge<span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span><span class="w">      </span>maxUnavailable<span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span><span class="w">  </span>template<span class="p">:</span><span class="w">
+</span><span class="w">    </span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">      </span>labels<span class="p">:</span><span class="w">
+</span><span class="w">        </span>app<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">    </span>spec<span class="p">:</span><span class="w">
+</span><span class="w">      </span>containers<span class="p">:</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span>image<span class="p">:</span><span class="w"> </span>quay.io/acmecorp/billing<span class="p">:</span>master-fd986f62<span class="w">
+</span><span class="w">        </span>name<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">        </span>ports<span class="p">:</span><span class="w">
+</span><span class="w">        </span>-<span class="w"> </span>containerPort<span class="p">:</span><span class="w"> </span><span class="m">80</span></code></pre></div>
+</div>
+
+  <div class="tab-pane" title="billing-svc.yaml">
+ <div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">apiVersion<span class="p">:</span><span class="w"> </span>v1<span class="w">
+</span><span class="w"></span>kind<span class="p">:</span><span class="w"> </span>Service<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>labels<span class="p">:</span><span class="w">
+</span><span class="w">    </span>app<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">  </span>namespace<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w"></span>spec<span class="p">:</span><span class="w">
+</span><span class="w">  </span>ports<span class="p">:</span><span class="w">
+</span><span class="w">  </span>-<span class="w"> </span>port<span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span><span class="w">  </span>selector<span class="p">:</span><span class="w">
+</span><span class="w">    </span>app<span class="p">:</span><span class="w"> </span>billing</code></pre></div>
+</div>
+
+  <div class="tab-pane" title="billing-ingress.yaml">
+ <div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">apiVersion<span class="p">:</span><span class="w"> </span>extensions/v1beta1<span class="w">
+</span><span class="w"></span>kind<span class="p">:</span><span class="w"> </span>Ingress<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>annotations<span class="p">:</span><span class="w">
+</span><span class="w">    </span>nginx.ingress.kubernetes.io/rewrite-target<span class="p">:</span><span class="w"> </span>/<span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">  </span>namespace<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w"></span>spec<span class="p">:</span><span class="w">
+</span><span class="w">  </span>rules<span class="p">:</span><span class="w">
+</span><span class="w">  </span>-<span class="w"> </span>http<span class="p">:</span><span class="w">
+</span><span class="w">      </span>paths<span class="p">:</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span>backend<span class="p">:</span><span class="w">
+</span><span class="w">          </span>serviceName<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">          </span>servicePort<span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span><span class="w">        </span>path<span class="p">:</span><span class="w"> </span>/api/billing</code></pre></div>
+</div>
+
+  <div class="tab-pane" title="billing-dashboards-cm.yaml">
+ <div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">apiVersion<span class="p">:</span><span class="w"> </span>v1<span class="w">
+</span><span class="w"></span>data<span class="p">:</span><span class="w">
+</span><span class="w">  </span>dashboard<span class="p">:</span><span class="w"> </span><span class="s1">&#39;[{&#34;annotations&#34;:{&#34;list&#34;:[]},&#34;editable&#34;:false,&#34;gnetId&#34;:null,&#34;graphTooltip&#34;:0,&#34;hideControls&#34;:false,&#34;id&#34;:null,&#34;links&#34;:[],&#34;panels&#34;:[{&#34;aliasColors&#34;:{},&#34;bars&#34;:false,&#34;dashLength&#34;:10,&#34;dashes&#34;:false,&#34;datasource&#34;:null,&#34;fill&#34;:1,&#34;gridPos&#34;:{&#34;h&#34;:7,&#34;w&#34;:12,&#34;x&#34;:0,&#34;y&#34;:0},&#34;id&#34;:2,&#34;legend&#34;:{&#34;alignAsTable&#34;:false,&#34;avg&#34;:false,&#34;current&#34;:false,&#34;max&#34;:false,&#34;min&#34;:false,&#34;rightSide&#34;:false,&#34;show&#34;:true,&#34;total&#34;:false,&#34;values&#34;:false},&#34;lines&#34;:true,&#34;linewidth&#34;:1,&#34;links&#34;:[],&#34;nullPointMode&#34;:&#34;null&#34;,&#34;percentage&#34;:false,&#34;pointradius&#34;:5,&#34;points&#34;:false,&#34;renderer&#34;:&#34;flot&#34;,&#34;repeat&#34;:null,&#34;seriesOverrides&#34;:[],&#34;spaceLength&#34;:10,&#34;stack&#34;:false,&#34;steppedLine&#34;:false,&#34;targets&#34;:[{&#34;expr&#34;:&#34;sum
+</span><span class="s1">    by (code)(sum(irate(http_request_total{job=billing}[2m])))&#34;,&#34;format&#34;:&#34;time_series&#34;,&#34;intervalFactor&#34;:2,&#34;legendFormat&#34;:&#34;{{code}}&#34;,&#34;refId&#34;:&#34;A&#34;}],&#34;thresholds&#34;:[],&#34;timeFrom&#34;:null,&#34;timeShift&#34;:null,&#34;title&#34;:&#34;billing
+</span><span class="s1">    RPS&#34;,&#34;tooltip&#34;:{&#34;shared&#34;:true,&#34;sort&#34;:0,&#34;value_type&#34;:&#34;individual&#34;},&#34;type&#34;:&#34;graph&#34;,&#34;xaxis&#34;:{&#34;buckets&#34;:null,&#34;mode&#34;:&#34;time&#34;,&#34;name&#34;:null,&#34;show&#34;:true},&#34;yaxes&#34;:[{&#34;format&#34;:&#34;short&#34;,&#34;label&#34;:null,&#34;logBase&#34;:1,&#34;max&#34;:null,&#34;min&#34;:null,&#34;show&#34;:true},{&#34;format&#34;:&#34;short&#34;,&#34;label&#34;:null,&#34;logBase&#34;:1,&#34;max&#34;:null,&#34;min&#34;:null,&#34;show&#34;:true}]},{&#34;aliasColors&#34;:{},&#34;bars&#34;:false,&#34;dashLength&#34;:10,&#34;dashes&#34;:false,&#34;datasource&#34;:null,&#34;fill&#34;:1,&#34;gridPos&#34;:{&#34;h&#34;:7,&#34;w&#34;:12,&#34;x&#34;:12,&#34;y&#34;:0},&#34;id&#34;:3,&#34;legend&#34;:{&#34;alignAsTable&#34;:false,&#34;avg&#34;:false,&#34;current&#34;:false,&#34;max&#34;:false,&#34;min&#34;:false,&#34;rightSide&#34;:false,&#34;show&#34;:true,&#34;total&#34;:false,&#34;values&#34;:false},&#34;lines&#34;:true,&#34;linewidth&#34;:1,&#34;links&#34;:[],&#34;nullPointMode&#34;:&#34;null&#34;,&#34;percentage&#34;:false,&#34;pointradius&#34;:5,&#34;points&#34;:false,&#34;renderer&#34;:&#34;flot&#34;,&#34;repeat&#34;:null,&#34;seriesOverrides&#34;:[],&#34;spaceLength&#34;:10,&#34;stack&#34;:false,&#34;steppedLine&#34;:false,&#34;targets&#34;:[{&#34;expr&#34;:&#34;histogram_quantile(0.99,
+</span><span class="s1">    sum(rate(http_request_duration_seconds_bucket{job=billing}[2m])) by (route) *
+</span><span class="s1">    1e3&#34;,&#34;format&#34;:&#34;time_series&#34;,&#34;intervalFactor&#34;:2,&#34;legendFormat&#34;:&#34;{{route}} 99th
+</span><span class="s1">    percentile&#34;,&#34;refId&#34;:&#34;A&#34;},{&#34;expr&#34;:&#34;histogram_quantile(0.50, sum(rate(http_request_duration_seconds_bucket{job=billing}[2m]))
+</span><span class="s1">    by (route) * 1e3&#34;,&#34;format&#34;:&#34;time_series&#34;,&#34;intervalFactor&#34;:2,&#34;legendFormat&#34;:&#34;{{route}}
+</span><span class="s1">    median&#34;,&#34;refId&#34;:&#34;B&#34;},{&#34;expr&#34;:&#34;sum(rate(http_request_total{job=billing}[2m])) /
+</span><span class="s1">    sum(rate(http_request_duration_seconds_count{job=billing}[2m])) * 1e3&#34;,&#34;format&#34;:&#34;time_series&#34;,&#34;intervalFactor&#34;:2,&#34;legendFormat&#34;:&#34;mean&#34;,&#34;refId&#34;:&#34;C&#34;}],&#34;thresholds&#34;:[],&#34;timeFrom&#34;:null,&#34;timeShift&#34;:null,&#34;title&#34;:&#34;billing
+</span><span class="s1">    Latency&#34;,&#34;tooltip&#34;:{&#34;shared&#34;:true,&#34;sort&#34;:0,&#34;value_type&#34;:&#34;individual&#34;},&#34;type&#34;:&#34;graph&#34;,&#34;xaxis&#34;:{&#34;buckets&#34;:null,&#34;mode&#34;:&#34;time&#34;,&#34;name&#34;:null,&#34;show&#34;:true},&#34;yaxes&#34;:[{&#34;format&#34;:&#34;ms&#34;,&#34;label&#34;:null,&#34;logBase&#34;:1,&#34;max&#34;:null,&#34;min&#34;:null,&#34;show&#34;:true},{&#34;format&#34;:&#34;short&#34;,&#34;label&#34;:null,&#34;logBase&#34;:1,&#34;max&#34;:null,&#34;min&#34;:null,&#34;show&#34;:true}]}],&#34;refresh&#34;:&#34;&#34;,&#34;schemaVersion&#34;:16,&#34;style&#34;:&#34;dark&#34;,&#34;tags&#34;:[],&#34;time&#34;:{&#34;from&#34;:&#34;now-6h&#34;,&#34;to&#34;:&#34;now&#34;},&#34;timepicker&#34;:{&#34;refresh_intervals&#34;:[&#34;5s&#34;,&#34;10s&#34;,&#34;30s&#34;,&#34;1m&#34;,&#34;5m&#34;,&#34;15m&#34;,&#34;30m&#34;,&#34;1h&#34;,&#34;2h&#34;,&#34;1d&#34;],&#34;time_options&#34;:[&#34;5m&#34;,&#34;15m&#34;,&#34;1h&#34;,&#34;6h&#34;,&#34;12h&#34;,&#34;24h&#34;,&#34;2d&#34;,&#34;7d&#34;,&#34;30d&#34;]},&#34;timezone&#34;:&#34;browser&#34;,&#34;title&#34;:&#34;Service
+</span><span class="s1">    \u003e billing&#34;,&#34;uid&#34;:&#34;&#34;,&#34;version&#34;:0}]&#39;</span><span class="w">
+</span><span class="w"></span>kind<span class="p">:</span><span class="w"> </span>ConfigMap<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>labels<span class="p">:</span><span class="w">
+</span><span class="w">    </span>app<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">    </span>maintainer<span class="p">:</span><span class="w"> </span>damien@weave.works<span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>billing-dashboards<span class="w">
+</span><span class="w">  </span>namespace<span class="p">:</span><span class="w"> </span>billing</code></pre></div>
+</div>
+
+  <div class="tab-pane" title="billing-prometheus-rule.yaml">
+ <div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">apiVersion<span class="p">:</span><span class="w"> </span>monitoring.coreos.com/v1<span class="w">
+</span><span class="w"></span>kind<span class="p">:</span><span class="w"> </span>PrometheusRule<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>labels<span class="p">:</span><span class="w">
+</span><span class="w">    </span>app<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">    </span>maintainer<span class="p">:</span><span class="w"> </span>damien@weave.works<span class="w">
+</span><span class="w">    </span>prometheus<span class="p">:</span><span class="w"> </span>global<span class="w">
+</span><span class="w">    </span>role<span class="p">:</span><span class="w"> </span>alert-rules<span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w"></span>spec<span class="p">:</span><span class="w">
+</span><span class="w">  </span>groups<span class="p">:</span><span class="w">
+</span><span class="w">  </span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>billing-alerts.rules<span class="w">
+</span><span class="w">    </span>rules<span class="p">:</span><span class="w">
+</span><span class="w">    </span>-<span class="w"> </span>alert<span class="p">:</span><span class="w"> </span>HighErrorRate<span class="w">
+</span><span class="w">      </span>annotations<span class="p">:</span><span class="w">
+</span><span class="w">        </span>description<span class="p">:</span><span class="w"> </span>More<span class="w"> </span>than<span class="w"> </span><span class="m">10</span>%<span class="w"> </span>of<span class="w"> </span>requests<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>billing<span class="w"> </span>service<span class="w"> </span>are<span class="w"> </span>failing<span class="w">
+</span><span class="w">          </span>with<span class="w"> </span>5xx<span class="w"> </span>errors<span class="w">
+</span><span class="w">        </span>details<span class="p">:</span><span class="w"> </span><span class="s1">&#39;{{$value | printf &#34;%.1f&#34;}}% errors for more than 5m&#39;</span><span class="w">
+</span><span class="w">        </span>service<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">      </span>expr<span class="p">:</span><span class="w"> </span>|<span class="sd">-
+</span><span class="sd">        rate(http_request_total{job=billing,code=~&#34;5..&#34;}[2m])</span><span class="w">
+</span><span class="w">            </span>/<span class="w"> </span>rate(http_request_duration_seconds_count{job=billing}<span class="p">[</span>2m<span class="p">]</span>)<span class="w"> </span>*<span class="w"> </span><span class="m">100</span><span class="w"> </span>&gt;<span class="w"> </span><span class="m">10</span><span class="w">
+</span><span class="w">      </span>for<span class="p">:</span><span class="w"> </span>5m<span class="w">
+</span><span class="w">      </span>labels<span class="p">:</span><span class="w">
+</span><span class="w">        </span>severity<span class="p">:</span><span class="w"> </span>critical</code></pre></div>
+</div>
+
+</div>
+</div>
+
+
+<p>What&rsquo;s interesting to me is that such an approach shifts writing
+configuration files from a big flat soup of properties to a familiar API
+problem: developers in charge of the platform get to define the high level
+objects they want to present to their users, can encode best practices and
+hide details in library code.</p>
+
+<p>For the curious minds, the <code>jk</code> script used to generate these Kubernetes
+objects can be found in the <a href="https://github.com/jkcfg/jk/tree/master/examples/kubernetes/micro-service" target="_blank">jk repository</a>.</p>
+
+<h2 id="built-for-configuration">Built for configuration</h2>
+
+<p>We&rsquo;re building <a href="https://github.com/jkcfg/jk" target="_blank"><code>jk</code></a> in an attempt to advance the configuration
+management discussion. It offers a different take on existing solutions:</p>
+
+<ul>
+<li><p><strong><code>jk</code> is a generation tool</strong>. We believe in a strict separation of
+configuration data and how that data is being used. For instance we do not
+take an opinionated view on how you should deploy applications to a cluster
+and leave that design choice in your hands. In a sense, <code>jk</code> is a pure
+function transforming a set of input into configuration files.</p></li>
+
+<li><p><strong><code>jk</code> is cross domain</strong>. <code>jk</code> generates JSON, YAML, <a href="https://github.com/hashicorp/hcl" target="_blank">HCL</a> as well as
+plain text files. It allows the generation of cross-domain configuration. In
+the micro-service example above, grafana dashboards and Kubernetes
+objects are part of two different domains that are usually treated
+differently. We could augment the example further by defining a list of AWS
+resources needed for that service to operate (eg. an RDS instance) as
+<a href="https://www.terraform.io/" target="_blank">Terraform</a> HCL.</p></li>
+
+<li><p><strong><code>jk</code> uses a general purpose language</strong>: javascript. The configuration
+domain attracts a lot of people interested in languages and the result is
+many new Domain Specific Languages (DSLs). We do not believe those new
+languages offer more expressive power than javascript and their tooling is
+generally lagging behind. With a widely used general purpose language, we get
+many things for free: unit test frameworks, linters, api documentation,
+refactoring tools, IDE support, static typing, ecosystem of libraries, &hellip;</p></li>
+
+<li><p><strong><code>jk</code> is hermetic</strong>. Hermeticity is the property to produce the same
+output given the same input no matter the machine the program is being run
+on. This seems like a great property for a tool generating configuration
+files. We achieve this with a custom v8-based runtime exposing as little as
+possible from the underlying OS. For instance you cannot access the process
+environment variables nor read file anywhere on the filesystem with <code>jk</code>.</p></li>
+
+<li><p><strong><code>jk</code> is fast!</strong> By being an embedded DSL and using v8 under the hood,
+we&rsquo;re significantly faster than the usual interpreters powering DSLs.</p></li>
+</ul>
+
+<h2 id="hello-world">Hello, World!</h2>
+
+<p>The <code>jk</code> <a href="https://github.com/jkcfg/jk/tree/master/examples/quick-start/alice" target="_blank">&ldquo;Hello, World!&rdquo; example</a> generates a YAML file from a js
+object:</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// Alice is a developer.
+</span><span class="c1"></span><span class="k">const</span> <span class="nx">alice</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span>
+  <span class="nx">beverage</span><span class="o">:</span> <span class="s1">&#39;Club-Mate&#39;</span><span class="p">,</span>
+  <span class="nx">monitors</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="nx">languages</span><span class="o">:</span> <span class="p">[</span>
+    <span class="s1">&#39;python&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;haskell&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;c++&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;68k assembly&#39;</span><span class="p">,</span> <span class="c1">// Alice is cool like that!
+</span><span class="c1"></span>  <span class="p">],</span>
+<span class="p">};</span>
+
+<span class="c1">// Instruct to write the alice object as a YAML file.
+</span><span class="c1"></span><span class="k">export</span> <span class="k">default</span> <span class="p">[</span>
+  <span class="p">{</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">alice</span><span class="p">,</span> <span class="nx">file</span><span class="o">:</span> <span class="sb">`developers/</span><span class="si">${</span><span class="nx">alice</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span><span class="si">}</span><span class="sb">.yaml`</span> <span class="p">},</span>
+<span class="p">];</span>
+</code></pre></div>
+<p>Run this example with:</p>
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ jk generate -v alice.js
+wrote developers/alice.yaml</code></pre></div>
+<p>This results in the <code>developers/alice.yaml</code> file:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">beverage<span class="p">:</span><span class="w"> </span>Club-Mate<span class="w">
+</span><span class="w"></span>languages<span class="p">:</span><span class="w">
+</span><span class="w"></span>-<span class="w"> </span>python<span class="w">
+</span><span class="w"></span>-<span class="w"> </span>haskell<span class="w">
+</span><span class="w"></span>-<span class="w"> </span>c++<span class="w">
+</span><span class="w"></span>-<span class="w"> </span>68k<span class="w"> </span>assembly<span class="w">
+</span><span class="w"></span>monitors<span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
+</span><span class="w"></span>name<span class="p">:</span><span class="w"> </span>Alice</code></pre></div>
+<h2 id="typing-with-typescript">Typing with TypeScript</h2>
+
+<p>The main reason to use a general purpose language is to benefit from its
+ecosystem. With javascript we can leverage typing systems such as
+<a href="https://www.typescriptlang.org/" target="_blank">TypeScript</a> or <a href="https://flow.org/" target="_blank">flow</a> to help authoring configuration.</p>
+
+<p>Types help in a number of ways, including when refactoring large amounts of
+code or defining and documenting APIs. I&rsquo;d also like to show it helps at
+authoring time by providing context-aware auto-completion:</p>
+
+<p><img src="types-autocompletion.png" alt="Types - autocompletion" /></p>
+
+<p>In the screenshot above we&rsquo;re defining a container in a <code>Deployment</code> and the
+IDE only offers the fields that are valid at the cursor position along with
+the accompanying type information and documentation.</p>
+
+<p>Similarly, typing can provide some level of validation:</p>
+
+<p><img src="types-validation.png" alt="Types - autocompletion" /></p>
+
+<p>The IDE is telling us we haven&rsquo;t quite defined a valid <code>apps/v1</code>
+<code>Deployment</code>. We are missing the mandatory <code>selector</code> field.</p>
+
+<h2 id="status-and-future-work">Status and Future work</h2>
+
+<p>Albeit being still young, we believe <code>jk</code> is already useful enough to be a
+contender in the space. There&rsquo;s definitely a lot of room for improvement
+though:</p>
+
+<ul>
+<li><strong>Helm integration</strong>: we&rsquo;d like <code>jk</code> to be able to render Helm charts
+client side and expose the result as js objects for further manipulation.</li>
+<li><strong>Jsonnet integration</strong>: similarly, it should be possible to consume
+existing jsonnet programs.</li>
+<li><strong>Native TypeScript support</strong>: currently developers need to run the <code>tsc</code>
+transpiler by hand. We should be able to make <code>jk</code> consume TypeScript files
+natively a la <a href="https://github.com/denoland/deno" target="_blank">deno</a>.</li>
+<li><strong>Kubernetes strategic merging</strong>: the object merging primitives are
+currently quite basic and we&rsquo;d like to extend the object merging capabilities
+of the standard library to implement Kubernetes <a href="https://github.com/kubernetes/community/blob/master/contributors/devel/sig-api-machinery/strategic-merge-patch.md" target="_blank">strategic
+merging</a>.</li>
+<li>Expose <strong>type generation for Kubernetes custom resources</strong>.</li>
+<li>More <strong>helper libraries</strong> to generate Grafana dashboards, custom resources
+for the Prometheus operator, &hellip;</li>
+<li>Produce <strong>more examples</strong>: it&rsquo;s easy to feel a bit overwhelmed when facing
+a new language and paradigm. More examples would make <code>jk</code> more approachable.</li>
+</ul>
+
+<h2 id="try-it-yourself">Try it yourself!</h2>
+
+<p>It&rsquo;s easy to download <code>jk</code> from the <a href="https://github.com/jkcfg/jk/releases" target="_blank">github release page</a> and
+<a href="https://github.com/jkcfg/jk/tree/master/examples/quick-start/alice" target="_blank">try it yourself</a>. You can also peruse through the (currently
+small amount of) <a href="https://github.com/jkcfg/jk/tree/master/examples" target="_blank">examples</a>.</p>
+]]></content>
+		</item>
 		
 		<item>
 			<title>Building and using coverage-instrumented programs with Go</title>
@@ -146,6 +457,278 @@ Another line
 Last lineWe can extract the lines from the start of the file to the marker by deleting the rest:$ sed &amp;#039;/&amp;ndash;/,$d&amp;#039; test-sed First line
 Second linea,b is the range the command, here d(elete), applies to. a and b can be, among others, line numbers, regular expressions or $ for end of the file.</description>
 			<content type="html"><![CDATA[<p>For reference for my future self, a few handy sed commands. Let&rsquo;s consider this file:<pre class="brush: text; gutter: true">$ cat test-sed<br />First line<br />Second line<br />&ndash;<br />Another line<br />Last line</pre>We can extract the lines from the start of the file to the marker by deleting the rest:<pre class="brush: text; gutter: true">$ sed &#039;/&ndash;/,$d&#039; test-sed <br />First line<br />Second line</pre><code>a,b</code> is the range the command, here <code>d(elete)</code>, applies to. <code>a</code> and <code>b</code> can be, among others, line numbers, regular expressions or <code>$</code> for end of the file. We can also extract the lines from the marker to the end of the file with:<pre class="brush: text; gutter: true">$ sed -n &#039;/&ndash;/,$p&#039; test-sed <br />&ndash;<br />Another line<br />Last line</pre>This one is slightly more complicated. By default sed spits all the lines it receives as input, <code>&rsquo;-n&rsquo;</code> is there to tell sed not to do that. The rest of the expression is to <code>p(rint)</code> the lines between <code>&ndash;</code> and the end of the file.<br />That&rsquo;s all folks!</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Clutter on Android: first results</title>
+			<link>https://damien.lespiau.name/posts/2011-01-31-clutter-on-android-first-results/</link>
+			<pubDate>Mon, 31 Jan 2011 15:41:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2011-01-31-clutter-on-android-first-results/</guid>
+			<description>With the release of Android 2.3, there&#39;s a decent way to integrate native applications with the NativeActivity class, an EGL library, and some C API to expose events, main loop, etc. So? how about porting Clutter to it now that it looks actually feasible? After a few days of work, the first results are there, quite promising!
+
+There&#39;s still a fairly large number of items in my TODO before being happy with the state of this work, the most prominent items are:</description>
+			<content type="html"><![CDATA[<div dir="ltr" style="text-align: left;" trbidi="on"><div dir="ltr" style="text-align: left;" trbidi="on">With the release of Android 2.3, there's a <em>decent</em> way to  integrate native applications with the NativeActivity class, an EGL  library, and some C API to expose events, main loop, etc. So? how about porting Clutter to it now that it looks actually feasible? After a few days of work, the first results are there, quite promising!</div><br /><div class="separator" style="clear: both; text-align: center;"><iframe width="320" height="266" class="YOUTUBE-iframe-video" data-thumbnail-src="https://i.ytimg.com/vi/bxxNHZTPxW4/0.jpg" src="https://www.youtube.com/embed/bxxNHZTPxW4?feature=player_embedded" frameborder="0" allowfullscreen></iframe></div><br />There's still a fairly large number of items in my TODO before being happy with the state of this work, the most prominent items are:<br /><ul><li>Get a clean up pass done to have something upstreamable, this includes finishing the event integration (it receives events but not yet forward them to Clutter),</li><li>Come up with a plan to manage the application life cycle and handle the case when Android destroys the EGL surface that you were using (probably by having the app save a state, and properly tear down Clutter).,</li><li>While you probably have the droid font installed in /system/fonts, this is not part of the advertised NDK interface. The safest choice is to  embed the font you want to use with your application. Unfortunately  fontconfig + freetype + pango + compressed assets in your Android package don't work really well together. Maybe solve it at the Pango level with a custom "direct" fontmap implementation that would let you register fonts from files easily?</li><li>What to do with text entries? show soft keyboard? Mx or Clutter problem? what happens to the GL surface in that case?</li><li>Better test the GMainLoop/ALooper main loop integration (esp. adding and removing file descriptors),</li><li>All the libraries that Clutter depends on are linked into a big .so (which is the Android NDK application). It results in a big .so (~5 MB, ~1.7 MB compressed in the .apk). That size can be dramatically reduced, sometimes at the expense of changes that will break the current API/ABI, but hell, you'll be statically linking anyway,</li><li>Provide "prebuilt libraries", ie. pre-compiled libraries that makes it easy to just use Clutter to build applications.</li></ul><br /></div>
+]]></content>
+		</item>
+		
+		<item>
+			<title>A simple autotool template</title>
+			<link>https://damien.lespiau.name/posts/2011-01-17-a-simple-autotool-template/</link>
+			<pubDate>Mon, 17 Jan 2011 01:25:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2011-01-17-a-simple-autotool-template/</guid>
+			<description>Every now and then, you feel a big urge to start hacking on a small thingy and need to create Makefiles for it. Turns out that the autotools won&#39;t be that intrusive when we are talking about small programs and you get do a reasonable job with a few lines, first the configure.ac file:# autoconf
+AC_PREREQ(2.59)
+AC_INIT([fart], [0.0.1], [damien.lespiau@gmail.com])
+AC_CONFIG_MACRO_DIR([build])
+AC_CONFIG_AUX_DIR([build])
+AC_CONFIG_SRCDIR([fart.c])
+AC_CONFIG_HEADERS([config.h])
+# automake
+AM_INIT_AUTOMAKE([1.11 -Wall foreign no-define])
+AM_SILENT_RULES([yes])</description>
+			<content type="html"><![CDATA[<div dir="ltr" style="text-align: left;" trbidi="on">Every now and then, you feel a big urge to start hacking on a small thingy and need to create Makefiles for it. Turns out that the autotools won't be that intrusive when we are talking about small programs and you get do a reasonable job with a few lines, first the <code class="filename">configure.ac</code> file:<pre class="brush: text; gutter: true"># autoconf<br />AC_PREREQ(2.59)<br />AC_INIT([fart], [0.0.1], [damien.lespiau@gmail.com])<br />AC_CONFIG_MACRO_DIR([build])<br />AC_CONFIG_AUX_DIR([build])<br />AC_CONFIG_SRCDIR([fart.c])<br />AC_CONFIG_HEADERS([config.h])<br /><br /># automake<br />AM_INIT_AUTOMAKE([1.11 -Wall foreign no-define])<br />AM_SILENT_RULES([yes])<br /><br /># Check for programs<br />AC_PROG_CC<br /><br /># Check for header files<br />AC_HEADER_STDC<br /><br />AS_COMPILER_FLAGS([WARNING_CFLAGS],<br />["-Wall -Wshadow -Wcast-align -Wno-uninitialized<br />-Wno-strict-aliasing -Wempty-body -Wformat -Wformat-security<br />-Winit-self -Wdeclaration-after-statement -Wvla<br />-Wpointer-arith"])<br /><br />PKG_CHECK_MODULES([GLIB], [glib-2.0 &gt;= 2.24])<br /><br />AC_OUTPUT([<br />Makefile<br />])</pre>and then <code class="filename">Makefile.am</code>:<pre class="brush: text; gutter: true">ACLOCAL_AMFLAGS = -I build ${ACLOCAL_FLAGS}<br /><br />bin_PROGRAMS = fart<br /><br />fart_SOURCES = fart.c<br />fart_CFLAGS  = $(WARNING_CFLAGS) $(GLIB_CFLAGS)<br />fart_LDADD   = $(GLIB_LIBS)</pre>After that, it's just a matter of running <code class="command">autoreconf</code><pre class="brush: text; gutter: true">$ autoreconf -i</pre>and you are all set!<br />So, what do you get for this amount of lines?<ul><li>The usual set of automake targets, handy! ("make tags" is so under used!) and bonus features (out of tree builds, extra rules to reconfigure/rebuild the Makefiles on changes in configure.ac/Makefile.an, ...)</li><li>Trying to make the autoconf/automake discreet (putting auxiliary files out of the way, silence mode, automake for non GNU projects)</li><li>Some decent warning flags (tweak to your liking!)</li><li>autoreconf cooperating with aclocal thanks to ACLOCAL_AMFLAGS and coping with non standard locations for system m4 macros</li></ul>I'll maintain a <a href="http://git.lespiau.name/cgit/program-template-simple/" title="A simple autotool template">git tree</a> to help bootstrap my next small hacks, feel free to use it as well!</div>
+]]></content>
+		</item>
+		
+		<item>
+			<title>A simple transition effect with Clutter</title>
+			<link>https://damien.lespiau.name/posts/2011-01-10-a-simple-transition-effect-with-clutter/</link>
+			<pubDate>Mon, 10 Jan 2011 15:06:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2011-01-10-a-simple-transition-effect-with-clutter/</guid>
+			<description>When doing something with graphics, your first need an idea (granted, as with pretty much everything else). In this case, a simple transition that I&#39;ve seen somewhere a long time ago and I wanted to reproduce with Clutter.
+
+The code is available in a branch of a media explorer I&#39;m currently working on. A few bullet points to follow the code:
+As the effect needs a &#34;screenshot&#34; of a Clutter scene to play with.</description>
+			<content type="html"><![CDATA[<div dir="ltr" style="text-align: left;" trbidi="on"><div dir="ltr" style="text-align: left;" trbidi="on"><div dir="ltr" style="text-align: left;" trbidi="on"><div style="text-align: left;">When doing something with graphics, your first need an idea (granted, as with pretty much everything else). In this case, a simple transition that I've seen somewhere a long time ago and I wanted to reproduce with Clutter.<br /><br /></div><div class="separator" style="clear: both; text-align: center;"><iframe allowfullscreen="" class="YOUTUBE-iframe-video" data-thumbnail-src="https://i.ytimg.com/vi/3FjYJ_Z9PK0/0.jpg" frameborder="0" height="266" src="https://www.youtube.com/embed/3FjYJ_Z9PK0?feature=player_embedded" width="320"></iframe></div><br />The code is available in a <a href="https://github.com/media-explorer/media-explorer/tree/wip%2Ftileout-effect" title="wip/tileout-effect branch">branch</a> of a <a href="http://media-explorer.github.com/" title="media explorer">media explorer</a> I'm currently working on. A few bullet points to follow the code:<br /><ul><li>As the effect needs a "screenshot" of a Clutter scene to play with. You first need to create a subclass of <code>ClutterOffscreenEffect</code> as it does the work of redirecting the painting of a subtree of actors in an offscreen buffer that you can&nbsp; reuse to texture the rectangles you'll be animating in the effect. This subclass has a "progress" property to control the animation.</li><li>Then actually compute the coordinates of the grid cells both in screen space and in texture space. To be able to use <code>cogl_rectangles_with_texture_coords()</code>, to try limit the number of GL calls (and/or by the Cogl journal and to ease the animation of the cells fading out, I decided to store the diagonals of the rectangle in a 1D array so that the following grid:<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="https://2.bp.blogspot.com/-LKxVkdVadYU/VrdK93frakI/AAAAAAAAAaw/A-p7eH2wuUI/s1600/grild-diagonals.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="https://2.bp.blogspot.com/-LKxVkdVadYU/VrdK93frakI/AAAAAAAAAaw/A-p7eH2wuUI/s1600/grild-diagonals.png" /></a></div><br />is stored as the following array:<br /></li></ul><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-JoSoRE8iPwk/VrdK903MEpI/AAAAAAAAAas/JOGg9ckytpA/s1600/tileout-1d-rects.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em; text-align: center;"><img border="0" height="32" src="https://1.bp.blogspot.com/-JoSoRE8iPwk/VrdK903MEpI/AAAAAAAAAas/JOGg9ckytpA/s320/tileout-1d-rects.png" width="320" /></a></div></div><ul><li><code>::paint_target()</code>looks at the "progress" property, animate those grid cells accordingly and draw them. <code>priv-&gt;rects</code> is the array storing the initial rectangles, <code>priv-&gt;animated_rects</code> the animated ones and <code>priv-&gt;chunks</code> stores the start and duration of each diagonal animation along with a (index, length) tuple that references the diagonal rectangles in priv-&gt;rects and priv-&gt;animated_rects.</li></ul>Some more details:<br /><ul><li>in the <code>::paint_target()</code> function, you can special case when the progress is 0.0 (paint the whole FBO instead of the textured grid) and 1.0 (don't do anything),</li><li>Clutter does not currently allow to just rerun the effect when you animate a property of an offscreen effect for instance. This means that when animating the "progress" property on the effect, it queues a redraw on the actor that end up in the offscreen to trigger the effect <code>::paint_target()</code> again. A branch from <a href="http://busydoingnothing.co.uk/" title="Neil">Neil</a> allows to queue a "rerun" on the effect to avoid having to do that,</li><li>The code has some limitations right now (ie, n_colums must be equal to n_rows) but easily fixable. Once done, it makes sense to try to push the effect to <a href="https://github.com/clutter-project/mx" title="Mx">Mx</a>.</li></ul></div></div>
+]]></content>
+		</item>
+		
+		<item>
+			<title>The GStreamer conference from a Clutter point of view</title>
+			<link>https://damien.lespiau.name/posts/2010-11-16-the-gstreamer-conference-from-a-clutter-point-of-view/</link>
+			<pubDate>Tue, 16 Nov 2010 19:30:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2010-11-16-the-gstreamer-conference-from-a-clutter-point-of-view/</guid>
+			<description>Two weeks ago I attendedthe first GStreamer conference, and it was great. I won&#39;t talk about the 1.0 plan that seems to take shape and looks really good but just what stroke me the most: Happy Clutter Stories and an Tale To Be Told to your manager.
+Let&#39;s move on the Clutter stories. You had a surprising number of people mixing GStreamer and Clutter, two talks especially:
+Florent Thiery founder of Ubicast talked about one of their products: aportable recording system with quite a bit of bling (records the slides, movement detection with OpenCV, RoI, .</description>
+			<content type="html"><![CDATA[<div dir="ltr" style="text-align: left;" trbidi="on">Two weeks ago I attended<a href="http://gstreamer.freedesktop.org/conference/"> the first GStreamer conference</a>, and it was great. I won't talk about the 1.0 plan that seems to take shape and looks really good but just what stroke me the most: Happy Clutter Stories and an Tale To Be Told to your manager.<br /><br />Let's move on the Clutter stories. You had a surprising number of people mixing GStreamer and Clutter, two talks especially:<br /><ul><li>Florent Thiery founder of <a href="http://www.ubicast.eu/">Ubicast</a> talked about one of their products: a<a href="http://www.ubicast.eu/en/Products/easycast/"> portable recording system</a> with quite a bit of bling (records the slides, movement detection with OpenCV, RoI, ...). The system was used to <a href="http://gstreamer-devel.966125.n4.nabble.com/GStreamer-Conference-2010-Talks-Recordings-td3043270.html#a3043270">record the talks on the main track</a>. Now, what was of particular interest for me is that the UI to control the system is entirely written with Clutter and python. They have built a whole toolkit on top of Clutter, in python, called <a href="https://launchpad.net/candies">candies</a>/<a href="https://launchpad.net/touchwizard">touchwizard</a> and written their UI with it, cooool.</li><li>A very impressive talk from the <a href="http://www.tandberg.com/">Tanberg</a> (now Cisco) guys about their <a href="http://www.tandberg.com/">Movi software</a>, video conferencing at its finest. It uses GStreamer extensively and Clutter for its UI (on Windows!). They said that about 150,000 copies of Movi are deployed in the wild. Patches from Ole André Vadla Ravnås and Haakon Sporsheim have been flowing to Clutter and Clutter-gst (win32 support).</li></ul><br />As a side note, Fluendo talked about their Open Source, Intel founded, <a href="https://core.fluendo.com/gstreamer/trac/browser/trunk/gst-fluendo-ismd">GStreamer codecs</a> for Intel CE3100/CE4100. This platform specificities are supported natively by Clutter (./configure --with-flavour=cex100) using the native EGL winsys called "GDL" and evdev events coming from the kernel. More on this later :p<br /><br />A very interesting point about those success stories is that the companies and engineers working with open source software to build their applications, sometimes with parts heavily covered by patents, <strong>while</strong> contributing back to the ecosystem that allowed to build those applications in the first place. Contributing is done at many levels: directly patches but also feedback on the libraries/platform (eg. input for GStreamer 1.0). And guess what? It works! To me, that's exactly how the GNOME platform should be used to build proprietary applications: build on top and contribute back to consolidate the libraries. I'd go as far as saying that contributing upstream is the best way to share code inside the same big corporation. Such companies are always very bad a cooperating between divisions.</div>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Using glib.py and gobject.py GDB scripts</title>
+			<link>https://damien.lespiau.name/posts/2010-03-23-using-glib.py-and-gobject.py-gdb-scripts/</link>
+			<pubDate>Tue, 23 Mar 2010 20:58:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2010-03-23-using-glib.py-and-gobject.py-gdb-scripts/</guid>
+			<description>Some time ago, Alexander Larson blogged about using gdb python macros when debugging Glib and GObject projects. I&#39;ve wanted to try those for ages, so I spent part of the week-end looking at what you could do with the new python enabled GDB, result: quite a lot of neat stuff!
+Let&#39;s start by making the script that now comes with glib work on stock gdb 7.0 and 7.1 (ie not the archer branch that contains more of the python work).</description>
+			<content type="html"><![CDATA[<div dir="ltr" style="text-align: left;" trbidi="on">Some time ago, Alexander Larson blogged about <a href="http://blogs.gnome.org/alexl/2009/09/21/archer-gdb-macros-for-glib/">using gdb python macros</a> when debugging Glib and GObject projects. I've wanted to try those for ages, so I spent part of the week-end looking at what you could do with the new python enabled GDB, result: quite a lot of neat stuff!<br /><br />Let's start by making the script that now comes with glib work on stock gdb 7.0 and 7.1 (ie not the archer branch that contains more of the python work). If those two scripts don't work for you yet (because your distribution is not packaging them, or is packaging a stock gdb 7.0. 7.1), here are a few hints you can follow:<br /><ul><li>glib's GDB macros rely on GDB's auto-load feature, ie, every time GDB load a library your program uses, it'll look for a corresponding python script to execute:</li></ul><pre class="brush: text; gutter: true">open("/lib/libglib-2.0.so.0.2200.4-gdb.py", O_RDONLY)<br />open("/usr/lib/debug/lib/libglib-2.0.so.0.2200.4-gdb.py", O_RDONLY)<br />open("/usr/share/gdb/auto-load/lib/libglib-2.0.so.0.2200.4-gdb.py", O_RDONLY)</pre>Some distributions have decided not to ship glib's and gobject's auto-load helpers, if you are in that case, you'd need to load <code>gobject.py</code> and <code>glib.py</code> by hand. For that purpose I've added a small python command in my <code>~/.gdbinit</code>:<br /><pre class="brush: python; gutter: true">import os.path<br />import sys<br />import gdb<br /><br /># Update module path.<br />dir = os.path.join(os.path.expanduser("~"), ".gdb")<br />if not dir in sys.path:<br />    sys.path.insert(0, dir)<br /><br />class RegisterCommand (gdb.Command):<br />"""Register GLib and GObject modules"""<br /><br />    def __init__ (self):<br />        super (RegisterCommand, self).__init__ ("gregister",<br />                                                gdb.COMMAND_DATA,<br />                                                gdb.COMPLETE_NONE)<br /><br />    def invoke (self, arg, from_tty):<br />        objects = gdb.objfiles ()<br />        for object in objects:<br />            if object.filename.find ("libglib-2.0.so.") != -1:<br />                from glib import register<br />                register (object)<br />            elif object.filename.find ("libgobject-2.0.so.") != -1:<br />                from gobject import register<br />                register (object)<br /><br />RegisterCommand ()<br /></pre>What I do is put <code>glib.py</code> and <code>gobject.py</code> in a<code> ~/.gdb</code> directory and don't forget to call <code>gregister</code> inside GDB (once gdb has loaded glib and gobject)<br /><ul><li>The scripts that are inside glib's repository were written with the archer branch of gdb (which bring all the python stuff). Unfortunately stock GDB (7.0 and 7.1) does not have everything the archer gdb has. I have a <a href="https://bugzilla.gnome.org/show_bug.cgi?id=613732">couple</a> of <a href="https://bugzilla.gnome.org/show_bug.cgi?id=613736">patches</a> to fix that in the queue. Meanwhile you can grab them in <a href="http://git.lespiau.name/cgit/sk/tree/dotfiles/gdb">my survival kit repository</a>. This will disable the back trace filters as they are still not in stock GDB.</li></ul><br />You're all set! it's time to enjoy pretty printing and <code>gforeach</code>. Hopefully people will join the fun at some point and add more GDB python macro goodness both inside glib and in other projects (for instance a ClutterActor could print its name).<br /><pre class="brush: c; gutter: true">int main (int argc, char **argv)<br />{<br />glist = g_list_append (glist, "first");<br />glist = g_list_append (glist, "second");<br /><br />return breeeaaak_oooon_meeeee ();<br />}</pre>gives:<br /><pre class="brush: text; gutter: true">(gdb) b breeeaaak_oooon_meeeee<br />Breakpoint 1 at 0x80484b7: file glib.c, line 9.<br />(gdb) r<br />Starting program: /home/damien/src/test-gdb/glib<br />Breakpoint 1, breeeaaak_oooon_meeeee () at glib.c:9<br />9&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; return 0;<br />(gdb) gregister<br />(gdb) gforeach s in glistp: print ((char *)$s)<br />No symbol "glistp" in current context.<br />(gdb) gforeach s in glist: print ((char *)$s)<br />$2 = 0x80485d0 "first"<br />$3 = 0x80485d6 "second"</pre></div>
+]]></content>
+		</item>
+		
+		<item>
+			<title>AS_AM_STFU</title>
+			<link>https://damien.lespiau.name/posts/2010-02-03-as_am_stfu/</link>
+			<pubDate>Wed, 03 Feb 2010 15:04:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2010-02-03-as_am_stfu/</guid>
+			<description>Writing m4 macro is fun, it really is.If you want to have make be a &amp;ldquo;make -s&amp;rdquo; without doing boring stuff like aliases and actually respect the default verbosity of automake &amp;gt;= 1.11, use this small m4 macro I wrote.</description>
+			<content type="html"><![CDATA[<p>Writing m4 macro is fun, it really is.<br/><br/>If you want to have make be a &ldquo;make -s&rdquo; without doing boring stuff like aliases and actually respect the default verbosity of automake &gt;= 1.11, use <a href="http://git.lespiau.name/cgit/sk/tree/build/m4/as-am-stfu.m4">this small m4 macro</a> I wrote.</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>g_object_notify_by_pspec()</title>
+			<link>https://damien.lespiau.name/posts/2010-01-28-g_object_notify_by_pspec/</link>
+			<pubDate>Thu, 28 Jan 2010 14:30:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2010-01-28-g_object_notify_by_pspec/</guid>
+			<description>Now that GLib 2.26.0 is out, it&amp;rsquo;s time to talk about a little patch to GObject I&amp;rsquo;ve written (well, the original idea was born while looking at it with Neil): add a new g_object_notify_by_pspec() symbol to GObject. As shown in the bug it can improve the notification of GObject properties by 10-15% (the test case tested was without any handler connected to the notify signal).If you can depend on GLib 2.</description>
+			<content type="html"><![CDATA[<p>Now that  GLib 2.26.0 is out, it&rsquo;s time to talk about a little patch to GObject I&rsquo;ve written (well, the original idea was born while looking at it with <a href="http://www.busydoingnothing.co.uk/blog/">Neil</a>): add a new <a href="http://library.gnome.org/devel/gobject/stable/gobject-The-Base-Object-Type.html#g-object-notify-by-pspec"><code>g_object_notify_by_pspec()</code></a> symbol to GObject. As shown <a href="https://bugzilla.gnome.org/show_bug.cgi?id=615425">in the bug </a>it can improve the notification of GObject properties by 10-15% (the test case tested was without any handler connected to the notify signal).<br/><br/>If you can depend on GLib 2.26, consider using it!</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Learning how to draw</title>
+			<link>https://damien.lespiau.name/posts/2010-01-03-learning-how-to-draw/</link>
+			<pubDate>Sun, 03 Jan 2010 18:35:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2010-01-03-learning-how-to-draw/</guid>
+			<description>I can&#39;t draw. I&#39;ve never been able to. Yet, for some reason, I decided to give it a serious try, buy a book to guide me in that journey (listening to an advice from pippin, yeah I know, crazy). The first step was, like a pilgrim walking to a sacred place, to go and buy some art supplies, which turned out to be a really enjoyable experience.
+The first thing you have to do is a snapshot of your skills before reading more of the book to be able to do a &#34;</description>
+			<content type="html"><![CDATA[<div dir="ltr" style="text-align: left;" trbidi="on"><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-IJEP5ovzzxs/VrdNAAU2HMI/AAAAAAAAAa4/A2Ol8bUqw7U/s1600/horse-rider-web.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="640" src="https://3.bp.blogspot.com/-IJEP5ovzzxs/VrdNAAU2HMI/AAAAAAAAAa4/A2Ol8bUqw7U/s640/horse-rider-web.jpg" width="518" /></a></div><br />I can't draw. I've never been able to. Yet, for some reason, I decided to give it a serious try, buy <a href="http://www.amazon.co.uk/exec/obidos/ASIN/0874774195/ref=ed_oe_h/002-5450444-4780047">a book</a> to guide me in that journey (listening to an advice from <a href="http://pippin.gimp.org/">pippin</a>, yeah I know, crazy). The first step was, like a pilgrim walking to a sacred place, to go and buy some art supplies, which turned out to be a really enjoyable experience.<br /><br />The first thing you have to do is a snapshot of your skills before reading more of the book to be able to do a "before/after" comparison. I thought it was quite hard, but was surprised that the result was all right, by my low standards anyway. You have to do 3 drawings: a self-portrait, looking at yourself in a mirror, a person/character drawn from memory without a visual help and your hand.<br /><br />The next exercise is there to make you realize that you'll have to forget everything you know and re-learn how to see to draw. It's about copying drawings upside down, copying it curve by curve without associating any meaning to what you are doing. The result is quite surprising as you can see on the left. Now it's a matter to learn how to do that without resorting to the upside down trick.<br /><br />It's only the beginning of a long journey, so many things can go wrong, but worth giving it a try!</div>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Aligning C function parameters with vim</title>
+			<link>https://damien.lespiau.name/posts/2009-12-07-aligning-c-function-parameters-with-vim/</link>
+			<pubDate>Mon, 07 Dec 2009 12:56:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2009-12-07-aligning-c-function-parameters-with-vim/</guid>
+			<description>updated: now saves/retores the paste registerIt has bothered me for a while, some coding styles, most notably in the GNOME world try to enforce good looking alignment of functions parameters such as:static UniqueResponseon_unique_message_received (UniqueApp *unique_app, gint command, UniqueMessageData *messagedata, guint time, gpointer user_data){}Until now, I aligned the arguments by hand, but that time is over! Please welcome my first substantial vim plugin: it defines a GNOMEAlignArguments command to help you in that task.</description>
+			<content type="html"><![CDATA[<p><span style="color: #ff0000;">updated:</span> now saves/retores the paste register<br/><br/>It has bothered me for a while, some coding styles, most notably in the GNOME world try to enforce good looking alignment of functions parameters such as:<br/><pre class="brush: c; gutter: true">static UniqueResponse<br/>on_unique_message_received (UniqueApp         *unique_app,<br/>                            gint               command,<br/>                            UniqueMessageData *message<em>data,<br/>                            guint              time</em>,<br/>                            gpointer           user_data)<br/>{<br/>}</pre><br/>Until now, I aligned the arguments by hand, but that time is over! Please welcome my first substantial vim plugin: it defines a <code class="command">GNOMEAlignArguments</code> command to help you in that task. All you have to do is to <a title="GNOME-align-args.vim" href="http://git.lespiau.name/cgit/sk/plain/dotfiles/vim/plugin/GNOME-align-args.vim">add this file</a> in your <code class="filename">~/.vim/plugin</code> directory and define a macro in your <code class="filename">~/.vimrc</code> to invoke it just like this:<br/><pre class="brush: text; gutter: true">&quot; Align arguments<br/>nmap ,a :GNOMEAlignArguments&lt;CR&gt;</pre><br/>HTH.</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Per project .vimrc</title>
+			<link>https://damien.lespiau.name/posts/2009-03-18-per-project-.vimrc/</link>
+			<pubDate>Wed, 18 Mar 2009 22:52:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2009-03-18-per-project-.vimrc/</guid>
+			<description>My natural C indentation style is basically kernel-like and my ~/.vimrc reflects that. Unfortunately I have to hack on GNUish-style projects and I really don&#39;t want to edit my ~/.vimrc every single time I switch between different indentation styles.
+Modelines are evil.
+To solve that terrible issue, vim can use per directory configuration files. To enable that neat feature only two little lines are needed in your ~/.vimrc:
+set exrc &#34;</description>
+			<content type="html"><![CDATA[<div dir="ltr" style="text-align: left;" trbidi="on">My natural C indentation style is basically kernel-like and my <code class="filename">~/.vimrc</code> reflects that. Unfortunately I have to hack on GNUish-style projects and I really don't want to edit my <code class="filename">~/.vimrc</code> every single time I switch between different indentation styles.<br /><br />Modelines are evil.<br /><br />To solve that terrible issue, <code class="command">vim</code> can use per directory configuration files. To enable that neat feature only two little lines are needed in your <code class="filename">~/.vimrc</code>:<br /><pre class="brush: text; gutter: true">set exrc   " enable per-directory .vimrc files<br />set secure   " disable unsafe commands in local .vimrc files</pre>Then it's just a matter of writing a per project <code class="filename">.vimrc</code> like this one:<br /><pre class="brush: text; gutter: true">set tabstop=8<br />set softtabstop=2<br />set shiftwidth=2<br />set expandtab<br />set cinoptions=&gt;4,n-2,{2,^-2,:0,=2,g0,h2,t0,+2,(0,u0,w1,m1</pre>You can find help with the wonderful <code>cinoptions</code> variable in the <a href="http://vimdoc.sourceforge.net/htmldoc/indent.html#cinoptions-values" title="cinoptions documentation">Vim documentation</a>. As sane persons open files from the project's root directory, this works like a charm. As for the Makefiles, they are special anyway, you really should add an autocmd in your <code class="filename">~/.vimrc</code>.<br /><pre class="brush: text; gutter: true">" add list lcs=tab:&gt;-,trail:x for tab/trailing space visuals<br />autocmd BufEnter ?akefile* set noet ts=8 sw=8 nocindent</pre></div>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Still some hair left</title>
+			<link>https://damien.lespiau.name/posts/2009-02-24-still-some-hair-left/</link>
+			<pubDate>Tue, 24 Feb 2009 11:11:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2009-02-24-still-some-hair-left/</guid>
+			<description>I&amp;rsquo;ve been asked to give more input on make V=1 Vs. &amp;ndash;disable-shave, so here it is: once again, before shipping your package with shave enabled by default, there is something crucial to understand: make V=1 (when having configured your package with &amp;ndash;enable-shave) is NOT equivalent to no shave at all (ie &amp;ndash;disable-shave). This is because the shave m4 macro is setting MAKEFLAGS=-s in every single Makefile. This means that make won&amp;rsquo;t print the commands as is used to, and that the only way to print something on the screen is to echo it.</description>
+			<content type="html"><![CDATA[<p>I&rsquo;ve been asked to give more input on <code class="command">make V=1</code> Vs. <code class="command">&ndash;disable-shave</code>, so here it is: once again, before shipping your package with shave enabled by default, there is something crucial to understand: <code class="command">make V=1</code> (when having configured your package with <code class="command">&ndash;enable-shave</code>) is <strong>NOT</strong> equivalent to no shave at all (ie <code class="command">&ndash;disable-shave</code>). This is because the shave m4 macro is setting <code>MAKEFLAGS=-s</code> in every single Makefile. This means that make won&rsquo;t print the commands as is used to, and that the only way to print something on the screen is to echo it. It&rsquo;s precisely what the shave wrappers do, they echo the CC/CXX and LIBTOOL commands when <code>V=1</code>. So in short custom rules and a few automake commands won&rsquo;t be displayed with <code class="command">make V=1</code>.<br /><br />That said, it&rsquo;s possible to craft a rule that would display the command with shaved enabled and <code class="command">make V=1</code>. The following rule:<br /><pre class="brush: text; gutter: true">lib-file2.h: Makefile<br />$(SHAVE_GEN)echo &quot;#define FOO_DEFINE 0xbabe&quot; &gt; lib-file2.h</pre>would become:<br /><pre class="brush: text; gutter: true">lib-file2.h: Makefile<br />@cmd=&#039;echo &quot;#define FOO_DEFINE 0xbabe&quot; &gt; lib-file2.h&#039;; &lt;br /&gt;if test x&quot;$$V&quot; = x1; then echo $$cmd; fi<br />$(SHAVE_GEN)echo &quot;#define FOO_DEFINE 0xbabe&quot; &gt; lib-file2.h</pre>which is quite ugly, to say the least. (if you find a smarter way, please enlighten me!).<br /><br />On the development side, shave is slowly becoming more mature:<br /><ul><li>Thanks to Jan Schmidt, shave works with non GNU <code class="command">sed</code> and <code class="command">echo</code> that do not support <code>-n</code>. It now works on Solaris, hopefully on BSDs and various Unixes as well (not tested though).</li> <li><code>SHAVE_INIT</code> has a new, optional, parameter which empowers the programmer to define shave&rsquo;s default behaviour (when <code class="command">./configure</code> is run without shave any related option): either <code>enable</code> or <code>disable</code>. ie. <code>SHAVE_INIT([autootols], [enable])</code> will instruct shave to find its wrapper scripts in the autotools directory and that running <code class="command">./configure</code> will actually enable the beast. SHAVE_INIT without parameters at all is supposed to mean that the wrapper scripts are in <code>$top_builddir</code> and that <code class="command">./configure</code> will not enable shave without the <code class="command">&ndash;enable-shave</code> option.</li> <li>however, shave has been reported to fail miserably with scratchbox.</li> </ul></p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>After-shave</title>
+			<link>https://damien.lespiau.name/posts/2009-02-23-after-shave/</link>
+			<pubDate>Mon, 23 Feb 2009 01:09:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2009-02-23-after-shave/</guid>
+			<description>A few concerns have been raised by shave, namely not being able to debug build failure in an automated environment as easily as before, or users giving useless bug reports of failed builds.
+One capital thing to realize is that, even when compiling with make V=1, everything that was not echoed was not showed (MAKEFLAGS=-s).
+Thus, I&amp;rsquo;ve made a few changes:
+Add CXX support (yes, that&amp;rsquo;s unrelated, but the question was raised, thanks to Tommi Komulainen for the initial patch),add a &amp;ndash;enable-shave option to the configure script,make the Good Old Behaviour the default one,as a side effect, the V and Q variables are now defined in the m4 macro, please remove them from your Makefile.</description>
+			<content type="html"><![CDATA[<p>A few concerns have been raised by shave, namely not being able to debug build failure in an automated environment as easily as before, or users giving  useless bug reports of failed builds.<br /><br />One capital thing to realize is that, even when compiling with make V=1, everything that was not echoed was not showed (MAKEFLAGS=-s).<br /><br />Thus, I&rsquo;ve made a few changes:<br /><ul><li>Add CXX support (yes, that&rsquo;s unrelated, but the question was raised, thanks to Tommi Komulainen for the initial patch),</li><li>add a &ndash;enable-shave option to the configure script,</li><li>make the Good Old Behaviour the default one,</li><li>as a side effect, the V and Q variables are now defined in the m4 macro, please remove them from your Makefile.am files.</li></ul><br />The rationale for the last point can be summarized as follow:<br /><ul><li>the default behaviour is as portable as before (for non GNU make that is), which is not the case is shave is activated by default,</li><li>you can still add &ndash;enable-shave to you autogen.sh script, bootstraping your project from a SCM will enable shave and that&rsquo;s cool!</li><li>don&rsquo;t break tools that were relying on automake&rsquo;s output.</li></ul><br />Grab the <a title="shave git repository" href="http://git.lespiau.name/cgit/shave/">latest version</a>! (git://git.lespiau.name/shave)</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>shave: making the autotools output sane</title>
+			<link>https://damien.lespiau.name/posts/2009-02-18-shave-making-the-autotools-output-sane/</link>
+			<pubDate>Wed, 18 Feb 2009 17:54:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2009-02-18-shave-making-the-autotools-output-sane/</guid>
+			<description>updated: Automake 1.11 has been release with &amp;ldquo;silent rules&amp;rdquo; support, a feature that supersedes the hack that shave is. If you can depend on automake 1.11 please consider using its silent rules rather than shave.
+updated: add some gtk-doc info
+updated: CXX support thanks to Tommi Komulainen
+shave
+Fed up with endless screens of libtool/automake output? Fed up with having to resort to -Werror to see warnings in your code? Then shave might be for you.</description>
+			<content type="html"><![CDATA[<p><span style="color: #ff0000;">updated</span><span style="color: #ff0000;">:</span> Automake 1.11 has been release with &ldquo;silent rules&rdquo; support, a feature that supersedes the hack that shave is. If you can depend on automake 1.11 please consider using its silent rules rather than shave.<br /><span style="color: #ff0000;">updated:</span> add some gtk-doc info<br /><span style="color: #ff0000;">updated:</span> CXX support thanks to Tommi Komulainen<br /><br /><h3>shave</h3><br />Fed up with endless screens of libtool/automake output? Fed up with having to resort to -Werror to see warnings in your code? Then shave might be for you. shave transforms the messy output of autotools into a pretty Kbuild-like one (Kbuild is the Linux build system). It&rsquo;s composed of a m4 macro and 2 small shell scripts and it&rsquo;s available in a <a title="shave git repository" href="http://git.lespiau.name/cgit/shave/">git repository</a>.<br /><pre class="brush: text; gutter: true">git clone git://git.lespiau.name/shave</pre>Hopefully, in a few minutes, you should be able to see your project compile like this:<br /><pre class="brush: text; gutter: true">$ make<br />Making all in foo<br />Making all in internal<br />CC    internal-file0.o<br />LINK  libinternal.la<br />CC    lib-file0.o<br />CC    lib-file1.o<br />LINK  libfoo.la<br />Making all in tools<br />CC    tool0-tool0.o<br />LINK  tool0</pre>Just like Kbuild, shave supports outputting the underlying commands using:<br /><pre class="brush: text; gutter: true">$ make V=1</pre><br /><h3>Setup</h3><br /><ul><li>Put the two shell scripts shave.in and shave-libtool.in in the directory of your choice (it can be at the root of your autotooled project).</li><li>add shave and shave-libtool to AC_CONFIG_FILES</li><li>add shave.m4 either in acinclude.m4 or your macro directory</li><li>add a call to SHAVE_INIT just before AC_CONFIG_FILES/AC_OUTPUT. SHAVE_INIT takes one argument, the directory where shave and shave-libtool are.</li></ul><br /><h3>Custom rules</h3><br />Sometimes you have custom Makefile rules, e.g. to generate a small header, run glib-mkenums or glib-genmarshal. It would be nice to output a pretty &lsquo;GEN&rsquo; line. That&rsquo;s quite easy actually, just add few (portable!) lines at the top of your Makefile.am:<br /><pre class="brush: text; gutter: true">V         = @<br />Q         = $(V:1=)<br />QUIET_GEN = $(Q:@=@echo &#039;  GEN   &#039;$@;)</pre>and then it&rsquo;s just a matter of prepending $(QUIET_GEN) to the rule creating the file:<br /><pre class="brush: text; gutter: true">lib-file2.h: Makefile<br />$(QUIET_GEN)echo &quot;#define FOO_DEFINE 0xbabe&quot; &gt; lib-file2.h</pre><br /><h3>gtk-doc + shave</h3><br />gtk-doc + shave + libtool 1.x (2.x is fine) is known to have a small issue, <a title="bug #572396" href="http://bugzilla.gnome.org/show_bug.cgi?id=572396">a patch</a> is available. Meanwhile I suggest adding a few lines to your autogen.sh script.<br /><pre class="brush: text; gutter: true">sed -e &#039;s#) &ndash;mode=compile#) &ndash;tag=CC &ndash;mode=compile#&#039; gtk-doc.make &gt; gtk-doc.temp &lt;br /&gt;&amp;&amp; mv gtk-doc.temp gtk-doc.make<br />sed -e &#039;s#) &ndash;mode=link#) &ndash;tag=CC &ndash;mode=link#&#039; gtk-doc.make &gt; gtk-doc.temp &lt;br /&gt;&amp;&amp; mv gtk-doc.temp gtk-doc.make</pre><br /><h3>dolt + shave</h3><br />It&rsquo;s possible to use <a title="dolt" href="http://dolt.freedesktop.org/">dolt</a> in conjunction with shave with a <a title="patch to make dolt work with shave" href="http://git.lespiau.name/cgit/dolt/commit/?h=shave-dolt">surprisingly small patch</a> to dolt.<br /><h3>Real world example: Clutter</h3><br /><pre class="brush: text; gutter: true">$ make<br />GEN   stamp-clutter-marshal.h<br />GEN   clutter-marshal.c<br />GEN   stamp-clutter-enum-types.h<br />Making all in cogl<br />Making all in common<br />CC    cogl-util.o<br />CC    cogl-bitmap.o<br />CC    cogl-bitmap-fallback.o<br />CC    cogl-primitives.o<br />CC    cogl-bitmap-pixbuf.o<br />CC    cogl-clip-stack.o<br />CC    cogl-fixed.o<br />CC    cogl-color.o<br />cogl-color.c: In function ‘cogl_set_source_color4ub’:<br />cogl-color.c:141: warning: implicit declaration of function ‘cogl_set_source_color’<br />CC    cogl-vertex-buffer.o<br />CC    cogl-matrix.o<br />CC    cogl-material.o<br />LINK  libclutter-cogl-common.la<br />[&hellip;]</pre><br />Eh! now we can see a warning there!<br /><br /><h3>TODO</h3><br />This is a first release, shave has not been widely tested aka it may not work for you!<br /><ul><li>test it with a wider range of automake/libtool versions</li><li>shave won&rsquo;t work without AC_CONFIG_HEADERS due to shell quoting problems</li><li>see what can be done for make install/dist (they are prettier thanks to make -s, but we probably miss a few actions)</li><li>there is a &lsquo;-s&rsquo; hardcoded in MAKEFLAGS,  I have to find a way to make it more flexible</li></ul></p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>ADV: ADV is a Dependency Viewer</title>
+			<link>https://damien.lespiau.name/posts/2009-02-10-adv-adv-is-a-dependency-viewer/</link>
+			<pubDate>Tue, 10 Feb 2009 13:25:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2009-02-10-adv-adv-is-a-dependency-viewer/</guid>
+			<description>A few months ago I wrote a small script to draw a dependency graph between the object files of a library (the original idea is from Lionel Landwerlin). You&#39;ll need an archive of your library for the tool to be able to look for the needed pieces. Let&#39;s have a look at a sample of its output to understand what it does. I ran it against the HEAD of clutter.</description>
+			<content type="html"><![CDATA[<div dir="ltr" style="text-align: left;" trbidi="on">A few months ago I wrote a small script to draw a dependency graph between the object files of a library (the original idea is from Lionel Landwerlin). You'll need an archive of your library for the tool to be able to look for the needed pieces. Let's have a look at a sample of its output to understand what it does. I ran it against the HEAD of <a href="http://www.clutter-project.org/" title="clutter">clutter</a>.<br /><br /><table align="center" cellpadding="0" cellspacing="0" class="tr-caption-container" style="margin-left: auto; margin-right: auto; text-align: center;"><tbody><tr><td style="text-align: center;"><a href="https://4.bp.blogspot.com/-7IuVVtFyFZk/VrdQOFiOs0I/AAAAAAAAAbQ/aJhyh7AafpY/s1600/clutter-b4f9c8204d.png" imageanchor="1" style="margin-left: auto; margin-right: auto;"><img border="0" height="372" src="https://4.bp.blogspot.com/-7IuVVtFyFZk/VrdQOFiOs0I/AAAAAAAAAbQ/aJhyh7AafpY/s640/clutter-b4f9c8204d.png" width="640" /></a></td></tr><tr><td class="tr-caption" style="text-align: center;"><span style="font-size: small; text-align: left;">A view of the clutter library</span></td></tr></tbody></table><br /><br />This graph was generated with the following (tred is part of graphviz to do transitive reductions on graphs):<br /><br /><code>$ adv.py clutter/.libs/libclutter-glx-0.9.a | tred | dot -Tsvg &gt; clutter.svg</code><br /><br />You can provide more than one library to the tool:<br /><br /><code>./adv.py ../clutter/clutter/.libs/libclutter-glx-0.9.a \<br />../glib-2.18.4/glib/.libs/libglib-2.0.a \<br />../glib-2.18.4/gobject/.libs/libgobject-2.0.a \<br />| tred | dot -Tsvg &gt; clutter-glib-gobject-boxed.svg</code><br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="https://1.bp.blogspot.com/-9whFAbspGDg/VrdQgFXnuLI/AAAAAAAAAbU/GFL4_e_5gbI/s1600/clutter-glib-gobject-small.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="397" src="https://1.bp.blogspot.com/-9whFAbspGDg/VrdQgFXnuLI/AAAAAAAAAbU/GFL4_e_5gbI/s640/clutter-glib-gobject-small.png" width="640" /></a></div><br /><br />What you can do with this:<br /><ul><li>trim down your library by removing the object files you don't need and that are leafs in the graph. This was actually the reason behind the script and it proved useful,</li><li>get an overview of a library,</li><li>make part of a library optional more easily.</li></ul><br />To make the script work you'll need graphviz, python, ar and nm (you can provide a cross compiler prefix with --cross-prefix).<br /><br />Interested? clone it! (or <a href="http://git.lespiau.name/cgit/adv/tree/adv.py" title="adv git repository">look at the code</a>)<br /><br /><code>$ git clone git://git.lespiau.name/misc/adv</code></div>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Vim macro for change log entry in .spec files</title>
+			<link>https://damien.lespiau.name/posts/2009-02-10-vim-macro-for-change-log-entry-in-.spec-files/</link>
+			<pubDate>Tue, 10 Feb 2009 12:38:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2009-02-10-vim-macro-for-change-log-entry-in-.spec-files/</guid>
+			<description>Tired of writing this kind of lines by hand ?* Mon Feb 09 2009 Damien Lespiau &amp;lt;damien.lespiau@xxxx.com&amp;gt; 1.4.3This vim macro does just this for you!nmap ,mob-ts :r!date +&amp;rsquo;\%a \%b \%d \%Y&amp;rsquo;&amp;lt;CR&amp;gt;0i* &amp;lt;ESC&amp;gt;$a Damien Lespiau &amp;lt;damien.lespiau@xxxx.com&amp;gt; FIXME</description>
+			<content type="html"><![CDATA[<p>Tired of writing this kind of lines by hand ?<br/><br/><code>* Mon Feb 09 2009 Damien Lespiau &lt;damien.lespiau@xxxx.com&gt; 1.4.3</code><br/><br/>This vim macro does just this for you!<br/><br/><code>nmap ,mob-ts :r!date +&rsquo;\%a \%b \%d \%Y&rsquo;&lt;CR&gt;0i* &lt;ESC&gt;$a Damien Lespiau &lt;damien.lespiau@xxxx.com&gt; FIXME</code></p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Cogl &#43; JS = Love</title>
+			<link>https://damien.lespiau.name/posts/2009-01-21-cogl-js-love/</link>
+			<pubDate>Wed, 21 Jan 2009 17:59:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2009-01-21-cogl-js-love/</guid>
+			<description>Played a bit with Gjs and Cogl this weekend and ended up rewriting Clutter&#39;s test-cogl-primitives in JavaScript. In the unlikely case someone is interested in trying it, you&#39;ll need a patch to support arrays of float as argument in introspected functions and another small patch to add introspection annotations for a few Cogl symbols. As usual you can grab the code inits git repository:
+
+ </description>
+			<content type="html"><![CDATA[<div dir="ltr" style="text-align: left;" trbidi="on">Played a bit with <a href="http://live.gnome.org/Gjs" title="Gjs">Gjs</a> and <a href="http://www.clutter-project.org/docs/cogl/stable/">Cogl</a> this weekend and ended up rewriting Clutter's test-cogl-primitives in JavaScript. In the unlikely case someone is interested in trying it, you'll need a <a href="https://bugzilla.gnome.org/show_bug.cgi?id=593245">patch to support arrays of float as argument in introspected functions</a> and another small <a href="http://bugzilla.openedhand.com/show_bug.cgi?id=1817">patch to add introspection annotations for a few Cogl symbols</a>. As usual you can grab the code in<a href="http://git.lespiau.name/cgit/clutter-gjs-examples/"> its git repository</a>:<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-4pNQGzLgNBw/VrdOwjumynI/AAAAAAAAAbE/kzytxLLn75w/s1600/cogl-primitives-js.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="320" src="https://4.bp.blogspot.com/-4pNQGzLgNBw/VrdOwjumynI/AAAAAAAAAbE/kzytxLLn75w/s320/cogl-primitives-js.png" width="293" /></a></div><br /></div>
+]]></content>
+		</item>
+		
+		<item>
+			<title>shave 0.1.0</title>
+			<link>https://damien.lespiau.name/posts/2009-01-13-shave-0.1.0/</link>
+			<pubDate>Tue, 13 Jan 2009 12:22:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2009-01-13-shave-0.1.0/</guid>
+			<description>After a month without anyone shouting at shave in despair or horror, it&amp;rsquo;s time to tag something to have a &amp;ldquo;stable&amp;rdquo; branch so people can rely on a stable interface (yes, it&amp;rsquo;s important even for a 100 lines macro!).What&amp;rsquo;s the most amazing is that quite a few projects have adopted shave in the GNOME and freedesktop.org communities : Clutter, Niepce Digital, Giggle, GStreamer, GObject introspection, PulseAudio, ConnMan, Json-glib, libunique, gnote, seed, gnome-utils, libccss, xorg ?</description>
+			<content type="html"><![CDATA[<p>After a month without anyone shouting at shave in despair or horror, it&rsquo;s time to tag something to have a &ldquo;stable&rdquo; branch so people can rely on a stable interface (yes, it&rsquo;s important even for a 100 lines macro!).<br/><br/>What&rsquo;s the most amazing is that quite a few projects have adopted shave in the GNOME and freedesktop.org communities : Clutter, Niepce Digital, Giggle, GStreamer, GObject introspection, PulseAudio, ConnMan, Json-glib, libunique, gnote, seed, gnome-utils, libccss, <a title="shave + xorg" href="http://lists.freedesktop.org/archives/xorg/2009-April/044920.html">xorg ?</a> and maybe some more I&rsquo;ve forgotten or I don&rsquo;t even know about.<br/><br/>You can grab the <a href="http://download.lespiau.name/shave/shave-0.1.0.tar.bz2">tarball</a> or clone the <a href="http://git.lespiau.name/cgit/shave/">git repositoy</a> (git clone git://git.lespiau.name/shave) and have a look at the <a href="http://git.lespiau.name/cgit/shave/tree/README">README</a> file.<br/><br/>Time to celebrate.</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Blending two RGBA 5551 layers</title>
+			<link>https://damien.lespiau.name/posts/2009-01-06-blending-two-rgba-5551-layers/</link>
+			<pubDate>Tue, 06 Jan 2009 18:59:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2009-01-06-blending-two-rgba-5551-layers/</guid>
+			<description>I&#39;ve just stumbled accross a small piece of code, written one year and a half ago, that blends two 512x512 RGBA 5551 images. It was originally written for a (good!) GIS, so the piece of code blends roads with rivers (and displays the result in a GdkPixbuf). The only thing interesting is that it uses some MMX, SSE2 and rdtsc instructions. You can have a look at the code in its git repository.</description>
+			<content type="html"><![CDATA[<div dir="ltr" style="text-align: left;" trbidi="on">I've just stumbled accross a small piece of code, written one year and a half ago, that blends two 512x512 RGBA 5551 images. It was originally written for a (good!) GIS, so the piece of code blends roads with rivers (and displays the result in a GdkPixbuf). The only thing interesting is that it uses some MMX, SSE2 and <code>rdtsc</code> instructions. You can have a look at the code in <a href="http://git.lespiau.name/cgit/blend-5551-sse2/tree/main.c">its git repository</a>.<br /><div class="separator" style="clear: both; text-align: center;"><a href="https://4.bp.blogspot.com/-zoARUkF4-Iw/VrdO7QiZFjI/AAAAAAAAAbI/BJErKuv7x08/s1600/screenshot-layer-fusion.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="320" src="https://4.bp.blogspot.com/-zoARUkF4-Iw/VrdO7QiZFjI/AAAAAAAAAbI/BJErKuv7x08/s320/screenshot-layer-fusion.png" width="307" /></a></div><br /></div>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Poulpy 0.1 is out !</title>
+			<link>https://damien.lespiau.name/posts/2008-01-29-poulpy-0.1-is-out-/</link>
+			<pubDate>Tue, 29 Jan 2008 02:31:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2008-01-29-poulpy-0.1-is-out-/</guid>
+			<description>Be sure to check its page.</description>
+			<content type="html"><![CDATA[<p>Be sure to check <a href="http://poulpy.lespiau.name">its page</a>.</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>libpneu first import</title>
+			<link>https://damien.lespiau.name/posts/2008-01-27-libpneu-first-import/</link>
+			<pubDate>Sun, 27 Jan 2008 19:16:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2008-01-27-libpneu-first-import/</guid>
+			<description>Waw, definitely hard to keep a decent pace at posting news in my blog. Nevertheless, a first import of libpneu has reached my public git repository. libpneu is an effort to make a tracing library that I could use in every single project I start. Basically, you put tracing points in your programs and libpneu prints them whenever you need to know what is happening. Different backends can be used to display traces and debug messages, from printing them to stdout, to sending them over an UDP socket.</description>
+			<content type="html"><![CDATA[<div dir="ltr" style="text-align: left;" trbidi="on">Waw, definitely hard to keep a decent pace at posting news in my blog. Nevertheless, a first import of libpneu has reached my <a href="http://git.lespiau.name/" title="Damien's git repositories">public git repository</a>. libpneu is an effort to make a tracing library that I could use in every single project I start. Basically, you put tracing points in your programs and libpneu prints them whenever you need to know what is happening. Different backends can be used to display traces and debug messages, from printing them to stdout, to sending them over an UDP socket. More about libpneu in a few days/weeks !<br /><br />A small screenshot to better understand what it does:<br /><br /><div class="separator" style="clear: both; text-align: center;"><a href="https://3.bp.blogspot.com/-posTCNm8f1c/VrdQxACBUkI/AAAAAAAAAbY/WxmREaH1OWo/s1600/libpneu-simple.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="128" src="https://3.bp.blogspot.com/-posTCNm8f1c/VrdQxACBUkI/AAAAAAAAAbY/WxmREaH1OWo/s400/libpneu-simple.png" width="400" /></a></div><br /></div>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Survival Kit</title>
+			<link>https://damien.lespiau.name/posts/2008-01-13-survival-kit/</link>
+			<pubDate>Sun, 13 Jan 2008 16:02:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2008-01-13-survival-kit/</guid>
+			<description>It&amp;rsquo;s time to start putting something on the site. It&amp;rsquo;s just a bunch of dot files (.vimrc, .gitconfig, &amp;hellip;) in a git repository. I&amp;rsquo;ve called it my Survival Kit as these are files I cannot work without. I hope to make the repository more useful over time, adding simple skeletons to start (DocBook, C, Java, C#, &amp;hellip;) projects.</description>
+			<content type="html"><![CDATA[<p>It&rsquo;s time to start putting something on the site. It&rsquo;s just a bunch of dot files (.vimrc, .gitconfig, &hellip;) in a <a href="http://git.lespiau.name/cgit/sk/tree/">git repository</a>. I&rsquo;ve called it my Survival Kit as these are files I cannot work without. I hope to make the repository more useful over time, adding simple skeletons to start (DocBook, C, Java, C#, &hellip;) projects.</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Hello world!</title>
+			<link>https://damien.lespiau.name/posts/2008-01-05-hello-world/</link>
+			<pubDate>Sat, 05 Jan 2008 18:45:00 +0000</pubDate>
+			
+			<guid>https://damien.lespiau.name/posts/2008-01-05-hello-world/</guid>
+			<description>OK. Let&amp;rsquo;s try to blog a little about what I do. Nothing fancy and mostly computer-related stuff but I hope it can be of any help to someone, somewhere, someday.</description>
+			<content type="html"><![CDATA[<p>OK. Let&rsquo;s try to blog a little about what I do. Nothing fancy and mostly computer-related stuff but I hope it can be of any help to someone, somewhere, someday.</p>
 ]]></content>
 		</item>
 		

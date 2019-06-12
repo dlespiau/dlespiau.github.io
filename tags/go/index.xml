@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-GB</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sun, 29 Jan 2017 19:45:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 12 Jun 2019 10:21:00 +0000</lastBuildDate>
     
 	<atom:link href="https://damien.lespiau.name/tags/go/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>jk - Configuration as code with TypeScript</title>
+      <link>https://damien.lespiau.name/posts/2019-06-06-jk-configuration-as-code/</link>
+      <pubDate>Wed, 12 Jun 2019 10:21:00 +0000</pubDate>
+      
+      <guid>https://damien.lespiau.name/posts/2019-06-06-jk-configuration-as-code/</guid>
+      <description>Of all the problems we have confronted, the ones over which the most brain power, ink, and code have been spilled are related to managing configurations — Borg, Omega, and Kubernetes - Lessons learned from three container-management systems over a decade
+ This post is the first of a series introducing jk. We will start the series by showing a concrete example of what jk can do for you.</description>
+    </item>
     
     <item>
       <title>Building and using coverage-instrumented programs with Go</title>

@@ -2,134 +2,14 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Damien Lespiau</title>
-    <link>https://damien.lespiau.name/</link>
+    <link>https://damien.lespiau.name/index.html</link>
     <description>Recent content on Damien Lespiau</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-GB</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sun, 29 Jan 2017 19:45:00 +0000</lastBuildDate>
     
 	<atom:link href="https://damien.lespiau.name/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>Building and using coverage-instrumented programs with Go</title>
-      <link>https://damien.lespiau.name/posts/2017-01-29-building-and-using-coverage-instrumented-programs-with-go/</link>
-      <pubDate>Sun, 29 Jan 2017 19:45:00 +0000</pubDate>
-      
-      <guid>https://damien.lespiau.name/posts/2017-01-29-building-and-using-coverage-instrumented-programs-with-go/</guid>
-      <description>tl;dr&amp;nbsp;We can create coverage-instrumented binaries, run them and aggregate the coverage data from running both the program and the unit tests.
-In the Go world, unit testing is tightly integrated with the go tool chain. Write some unit tests, run go test and tell anyone that will listen that you really hope to never have to deal with a build system for the rest of your life.
-Since Go 1.2 (Dec.</description>
-    </item>
-    
-    <item>
-      <title>Continuous Testing with Patchwork</title>
-      <link>https://damien.lespiau.name/posts/2016-02-15-continuous-testing-with-patchwork/</link>
-      <pubDate>Mon, 15 Feb 2016 18:00:00 +0000</pubDate>
-      
-      <guid>https://damien.lespiau.name/posts/2016-02-15-continuous-testing-with-patchwork/</guid>
-      <description>As promised in the post introducing my recent work on Patchwork, I&#39;ve written some more in-depth documentation to explain how to hook testing to Patchwork. I&#39;ve also realized that a blog post might not be the best place to put that documentation and opted to put it in the proper manual:
-http://patchwork-freedesktop.readthedocs.org/en/latest/testing.html
-Happy reading! </description>
-    </item>
-    
-    <item>
-      <title>Augmenting mailing-lists with Patchwork - Another try</title>
-      <link>https://damien.lespiau.name/posts/2016-02-13-augmenting-mailing-lists-with-patchwork-another-try/</link>
-      <pubDate>Sat, 13 Feb 2016 15:36:00 +0000</pubDate>
-      
-      <guid>https://damien.lespiau.name/posts/2016-02-13-augmenting-mailing-lists-with-patchwork-another-try/</guid>
-      <description>The mailing-list problem
-Many software projects use mailing-lists, which usually means mailman, not only for discussions around that project, but also for code contributions. A lot of open source projects work that way, including the one I interact with the most, the Linux kernel. A contributor sends patches to a mailing list, these days using&amp;nbsp;git send-email, and waits for feedback or for his/her patches to be picked up for inclusion if fortunate enough.</description>
-    </item>
-    
-    <item>
-      <title>Testing for pending migrations in Django</title>
-      <link>https://damien.lespiau.name/posts/2016-01-03-testing-for-pending-migrations-in-django/</link>
-      <pubDate>Sun, 03 Jan 2016 18:09:00 +0000</pubDate>
-      
-      <guid>https://damien.lespiau.name/posts/2016-01-03-testing-for-pending-migrations-in-django/</guid>
-      <description>DB migration support has been added in Django 1.7+, superseding South. More specifically, it&#39;s possible to automatically generate migrations steps when one or more changes in the application models are detected. Definitely a nice feature!
-I&#39;ve written a small generic unit-test that one should be able to drop into the tests directory of any Django project and that checks there&#39;s no pending migrations, ie. if the models are correctly in sync with the migrations declared in the application.</description>
-    </item>
-    
-    <item>
-      <title>Working in a separate prefix</title>
-      <link>https://damien.lespiau.name/posts/2014-12-05-working-in-a-separate-prefix/</link>
-      <pubDate>Fri, 05 Dec 2014 18:00:00 +0000</pubDate>
-      
-      <guid>https://damien.lespiau.name/posts/2014-12-05-working-in-a-separate-prefix/</guid>
-      <description>I&#39;ve been surprised in the past to discover that even some seasoned engineers didn&#39;t know how to use the autotools prefix feature. A sign they&#39;ve been lucky enough and didn&#39;t have to deal with Autotools too much. Here&#39;s my attempt to provide some introduction to ./configure --prefix.
-Working with or in &#34;a separate prefix&#34; is working with libraries and binaries (well, anything produced by &#39;make install&#39; in an autotooled project really) installed in a different directory than the system-wide ones (/usr or even /usr/local that can become quite messy).</description>
-    </item>
-    
-    <item>
-      <title>git commit --fixup and git rebase -i --autosquash</title>
-      <link>https://damien.lespiau.name/posts/2014-01-20-git-commit-fixup-and-git-rebase-i-autosquash/</link>
-      <pubDate>Mon, 20 Jan 2014 11:18:00 +0000</pubDate>
-      
-      <guid>https://damien.lespiau.name/posts/2014-01-20-git-commit-fixup-and-git-rebase-i-autosquash/</guid>
-      <description>It&amp;rsquo;s not unusual that I need to fix previous commits up when working on a branch or in the review phase. Until now I used a regular commit with some special marker to remember which commit to squash it with and then git rebase -i to reorder the patches and squash the fixup commits with their corresponding &amp;ldquo;parent&amp;rdquo; commits.
-Turns out, git can handle quite a few of those manual manipulations for you.</description>
-    </item>
-    
-    <item>
-      <title>A git pre-commit hook to check the year of copyright notices</title>
-      <link>https://damien.lespiau.name/posts/2013-01-13-a-git-pre-commit-hook-to-check-the-year-of-copyright-notices/</link>
-      <pubDate>Sun, 13 Jan 2013 21:39:00 +0000</pubDate>
-      
-      <guid>https://damien.lespiau.name/posts/2013-01-13-a-git-pre-commit-hook-to-check-the-year-of-copyright-notices/</guid>
-      <description>Like every year, touching a source file means you also need to update the year of the copyright notice you should have at the top of the file. I always end up forgetting about them, this is where a git pre-commit hook would be ultra-useful, so I wrote one:#
-# Check if copyright statements include the current year
-#
-files=git diff --cached --name-only
-year=date +&amp;amp;quot;%Y&amp;amp;quot;
-for f in $files; do</description>
-    </item>
-    
-    <item>
-      <title>Working on more than one line with sed&#39;s &#39;N&#39; command</title>
-      <link>https://damien.lespiau.name/posts/2013-01-03-working-on-more-than-one-line-with-seds-n-command/</link>
-      <pubDate>Thu, 03 Jan 2013 14:24:00 +0000</pubDate>
-      
-      <guid>https://damien.lespiau.name/posts/2013-01-03-working-on-more-than-one-line-with-seds-n-command/</guid>
-      <description>Yesterday I was asked to help solving a small sed problem. Considering that file (don&#39;t look too closely on the engineering of the defined elements):
-&amp;lt;root&amp;gt;
-&amp;lt;key&amp;gt;key0&amp;lt;/key&amp;gt;
-&amp;lt;string&amp;gt;value0&amp;lt;/string&amp;gt;
-&amp;lt;key&amp;gt;key1&amp;lt;/key&amp;gt;
-&amp;lt;string&amp;gt;value1&amp;lt;/string&amp;gt;
-&amp;lt;key&amp;gt;key2&amp;lt;/key&amp;gt;
-&amp;lt;string&amp;gt;value2&amp;lt;/string&amp;gt;
-&amp;lt;/root&amp;gt;The problem was: How to change value1 to VALUE!. The problem here is that you can&#39;t blindly execute a s command matching &amp;lt;string&amp;gt;.*&amp;lt;/string&amp;gt;.
-Sed maintains a buffer called the &#34;pattern space&#34; and processes commands on this buffer. From the GNU sed manual:</description>
-    </item>
-    
-    <item>
-      <title>HDMI stereo 3D &amp; KMS</title>
-      <link>https://damien.lespiau.name/posts/2013-01-02-hdmi-stereo-3d-kms/</link>
-      <pubDate>Wed, 02 Jan 2013 19:38:00 +0000</pubDate>
-      
-      <guid>https://damien.lespiau.name/posts/2013-01-02-hdmi-stereo-3d-kms/</guid>
-      <description>If everything goes according to plan, KMS in linux 3.13 should have stereo 3D support. Should one be interested in scanning out a stereo frame buffer to a 3D capable HDMI sink, here&#39;s a rough description of how those modes are exposed to user space and how to use them.
-A reader not well acquainted with the DRM sub-system and its mode setting API (Aka Kernel Mode Setting, KMS) could start by watching the first part of Laurent Pinchart&#39;s Anatomy of an Embedded KMS Driver or read David Herrmann&#39;s heavily documented mode setting example code.</description>
-    </item>
-    
-    <item>
-      <title>Extracting part of files with sed</title>
-      <link>https://damien.lespiau.name/posts/2012-01-10-extracting-part-of-files-with-sed/</link>
-      <pubDate>Tue, 10 Jan 2012 14:34:00 +0000</pubDate>
-      
-      <guid>https://damien.lespiau.name/posts/2012-01-10-extracting-part-of-files-with-sed/</guid>
-      <description>For reference for my future self, a few handy sed commands. Let&amp;rsquo;s consider this file:$ cat test-sed
-First line
-Second line
-&amp;ndash;
-Another line
-Last lineWe can extract the lines from the start of the file to the marker by deleting the rest:$ sed &amp;#039;/&amp;ndash;/,$d&amp;#039; test-sed First line
-Second linea,b is the range the command, here d(elete), applies to. a and b can be, among others, line numbers, regular expressions or $ for end of the file.</description>
-    </item>
     
   </channel>
 </rss>
