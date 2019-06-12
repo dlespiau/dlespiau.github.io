@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+
+<meta itemprop="name" content="jk - Configuration as code with TypeScript">
+<meta itemprop="description" content="Of all the problems we have confronted, the ones over which the most brain power, ink, and code have been spilled are related to managing configurations — Borg, Omega, and Kubernetes - Lessons learned from three container-management systems over a decade
+ This post is the first of a series introducing jk. We will start the series by showing a concrete example of what jk can do for you.">
+
+
+<meta itemprop="datePublished" content="2019-06-12T10:21:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-06-12T10:21:00&#43;00:00" />
+<meta itemprop="wordCount" content="1016">
+
+
+
+<meta itemprop="keywords" content="jk,configuration,go,javascript,typescript," />
+<meta property="og:title" content="jk - Configuration as code with TypeScript" />
+<meta property="og:description" content="Of all the problems we have confronted, the ones over which the most brain power, ink, and code have been spilled are related to managing configurations — Borg, Omega, and Kubernetes - Lessons learned from three container-management systems over a decade
+ This post is the first of a series introducing jk. We will start the series by showing a concrete example of what jk can do for you." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://damien.lespiau.name/posts/2019-06-12-jk-configuration-as-code/" />
+<meta property="article:published_time" content="2019-06-12T10:21:00+00:00" />
+<meta property="article:modified_time" content="2019-06-12T10:21:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="jk - Configuration as code with TypeScript"/>
+<meta name="twitter:description" content="Of all the problems we have confronted, the ones over which the most brain power, ink, and code have been spilled are related to managing configurations — Borg, Omega, and Kubernetes - Lessons learned from three container-management systems over a decade
+ This post is the first of a series introducing jk. We will start the series by showing a concrete example of what jk can do for you."/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>jk - Configuration as code with TypeScript</title>
+	<link rel="stylesheet" href="https://damien.lespiau.name/css/style.min.72bad3ca6af2b2ab6c699cdb547afef2766a3a4191ef6ccb6d4eaa776e030800.css" integrity="sha256-crrTymrysqtsaZzbVHr+8nZqOkGR72zLbU6qd24DCAA=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://damien.lespiau.name/">Damien Lespiau</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="https://damien.lespiau.name/posts/">Blog</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://twitter.com/__damien__" target="_blank" rel="noopener me" title="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a><a href="https://github.com/dlespiau" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:damien.lespiau@gmail.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://damien.lespiau.name/posts/">Blog</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Jun 12, 2019</span></div>
+				<h1>jk - Configuration as code with TypeScript</h1>
+			</header>
+			<div class="content">
+				
+
+<blockquote>
+<p><strong>Of all the problems we have confronted, the ones over which the most brain
+power, ink, and code have been spilled are related to managing
+configurations</strong> — <a href="https://queue.acm.org/detail.cfm?id=2898444" target="_blank">Borg, Omega, and Kubernetes - Lessons learned from three
+container-management systems over a decade</a></p>
+</blockquote>
+
+<p>This post is the first of a series introducing <a href="https://github.com/jkcfg/jk" target="_blank"><code>jk</code></a>. We will start the
+series by showing a concrete example of what <a href="https://github.com/jkcfg/jk" target="_blank"><code>jk</code></a> can do for you.</p>
+
+<p><a href="https://github.com/jkcfg/jk" target="_blank"><code>jk</code></a> is a javascript runtime tailored for writing configuration files.
+The abstraction and expressive power of a programming language makes writing
+configuration easier and more maintainable by allowing developers to think at
+a higher level.</p>
+
+<p>Let&rsquo;s pretend we want to deploy a <code>billing</code> micro-service on a Kubernetes
+cluster. This micro-service could be defined as:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">service<span class="p">:</span><span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">  </span>description<span class="p">:</span><span class="w"> </span>Provides<span class="w"> </span>the<span class="w"> </span>/api/billing<span class="w"> </span>endpoints<span class="w"> </span>for<span class="w"> </span>frontend.<span class="w">
+</span><span class="w">  </span>maintainer<span class="p">:</span><span class="w"> </span>damien@weave.works<span class="w">
+</span><span class="w">  </span>namespace<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">  </span>port<span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span><span class="w">  </span>image<span class="p">:</span><span class="w"> </span>quay.io/acmecorp/billing<span class="p">:</span>master-fd986f62<span class="w">
+</span><span class="w">  </span>ingress<span class="p">:</span><span class="w">
+</span><span class="w">    </span>path<span class="p">:</span><span class="w"> </span>/api/billing<span class="w">
+</span><span class="w">  </span>dashboards<span class="p">:</span><span class="w">
+</span><span class="w">    </span>-<span class="w"> </span>service.RPS.HTTP<span class="w">
+</span><span class="w">  </span>alerts<span class="p">:</span><span class="w">
+</span><span class="w">    </span>-<span class="w"> </span>service.RPS.HTTP.HighErrorRate</code></pre></div>
+<p>From this simple, reduced definition of what a micro-service is, we can
+generate:</p>
+
+<ul>
+<li>Kubernetes <code>Namespace</code>, <code>Deployment</code>, <code>Service</code> and <code>Ingress</code> objects.</li>
+<li>A <code>ConfigMap</code> with dashboard definitions that grafana can detect and load.</li>
+<li>Alerts for Prometheus using the <code>PrometheusRule</code> custom resource defined
+by the <a href="https://github.com/coreos/prometheus-operator" target="_blank">Prometheus operator</a>.</li>
+</ul>
+
+<div class='tabs'>
+  <ul class="nav nav-tabs"></ul>
+  <div class="tab-content">
+  <div class="tab-pane" title="billing-ns.yaml">
+ <div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">apiVersion<span class="p">:</span><span class="w"> </span>v1<span class="w">
+</span><span class="w"></span>kind<span class="p">:</span><span class="w"> </span>Namespace<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>billing</code></pre></div>
+</div>
+
+  <div class="tab-pane" title="billing-deploy.yaml">
+ <div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">apiVersion<span class="p">:</span><span class="w"> </span>apps/v1<span class="w">
+</span><span class="w"></span>kind<span class="p">:</span><span class="w"> </span>Deployment<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>labels<span class="p">:</span><span class="w">
+</span><span class="w">    </span>app<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">  </span>namespace<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w"></span>spec<span class="p">:</span><span class="w">
+</span><span class="w">  </span>revisionHistoryLimit<span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
+</span><span class="w">  </span>strategy<span class="p">:</span><span class="w">
+</span><span class="w">    </span>rollingUpdate<span class="p">:</span><span class="w">
+</span><span class="w">      </span>maxSurge<span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span><span class="w">      </span>maxUnavailable<span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span><span class="w">  </span>template<span class="p">:</span><span class="w">
+</span><span class="w">    </span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">      </span>labels<span class="p">:</span><span class="w">
+</span><span class="w">        </span>app<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">    </span>spec<span class="p">:</span><span class="w">
+</span><span class="w">      </span>containers<span class="p">:</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span>image<span class="p">:</span><span class="w"> </span>quay.io/acmecorp/billing<span class="p">:</span>master-fd986f62<span class="w">
+</span><span class="w">        </span>name<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">        </span>ports<span class="p">:</span><span class="w">
+</span><span class="w">        </span>-<span class="w"> </span>containerPort<span class="p">:</span><span class="w"> </span><span class="m">80</span></code></pre></div>
+</div>
+
+  <div class="tab-pane" title="billing-svc.yaml">
+ <div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">apiVersion<span class="p">:</span><span class="w"> </span>v1<span class="w">
+</span><span class="w"></span>kind<span class="p">:</span><span class="w"> </span>Service<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>labels<span class="p">:</span><span class="w">
+</span><span class="w">    </span>app<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">  </span>namespace<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w"></span>spec<span class="p">:</span><span class="w">
+</span><span class="w">  </span>ports<span class="p">:</span><span class="w">
+</span><span class="w">  </span>-<span class="w"> </span>port<span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span><span class="w">  </span>selector<span class="p">:</span><span class="w">
+</span><span class="w">    </span>app<span class="p">:</span><span class="w"> </span>billing</code></pre></div>
+</div>
+
+  <div class="tab-pane" title="billing-ingress.yaml">
+ <div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">apiVersion<span class="p">:</span><span class="w"> </span>extensions/v1beta1<span class="w">
+</span><span class="w"></span>kind<span class="p">:</span><span class="w"> </span>Ingress<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>annotations<span class="p">:</span><span class="w">
+</span><span class="w">    </span>nginx.ingress.kubernetes.io/rewrite-target<span class="p">:</span><span class="w"> </span>/<span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">  </span>namespace<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w"></span>spec<span class="p">:</span><span class="w">
+</span><span class="w">  </span>rules<span class="p">:</span><span class="w">
+</span><span class="w">  </span>-<span class="w"> </span>http<span class="p">:</span><span class="w">
+</span><span class="w">      </span>paths<span class="p">:</span><span class="w">
+</span><span class="w">      </span>-<span class="w"> </span>backend<span class="p">:</span><span class="w">
+</span><span class="w">          </span>serviceName<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">          </span>servicePort<span class="p">:</span><span class="w"> </span><span class="m">80</span><span class="w">
+</span><span class="w">        </span>path<span class="p">:</span><span class="w"> </span>/api/billing</code></pre></div>
+</div>
+
+  <div class="tab-pane" title="billing-dashboards-cm.yaml">
+ <div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">apiVersion<span class="p">:</span><span class="w"> </span>v1<span class="w">
+</span><span class="w"></span>data<span class="p">:</span><span class="w">
+</span><span class="w">  </span>dashboard<span class="p">:</span><span class="w"> </span><span class="s1">&#39;[{&#34;annotations&#34;:{&#34;list&#34;:[]},&#34;editable&#34;:false,&#34;gnetId&#34;:null,&#34;graphTooltip&#34;:0,&#34;hideControls&#34;:false,&#34;id&#34;:null,&#34;links&#34;:[],&#34;panels&#34;:[{&#34;aliasColors&#34;:{},&#34;bars&#34;:false,&#34;dashLength&#34;:10,&#34;dashes&#34;:false,&#34;datasource&#34;:null,&#34;fill&#34;:1,&#34;gridPos&#34;:{&#34;h&#34;:7,&#34;w&#34;:12,&#34;x&#34;:0,&#34;y&#34;:0},&#34;id&#34;:2,&#34;legend&#34;:{&#34;alignAsTable&#34;:false,&#34;avg&#34;:false,&#34;current&#34;:false,&#34;max&#34;:false,&#34;min&#34;:false,&#34;rightSide&#34;:false,&#34;show&#34;:true,&#34;total&#34;:false,&#34;values&#34;:false},&#34;lines&#34;:true,&#34;linewidth&#34;:1,&#34;links&#34;:[],&#34;nullPointMode&#34;:&#34;null&#34;,&#34;percentage&#34;:false,&#34;pointradius&#34;:5,&#34;points&#34;:false,&#34;renderer&#34;:&#34;flot&#34;,&#34;repeat&#34;:null,&#34;seriesOverrides&#34;:[],&#34;spaceLength&#34;:10,&#34;stack&#34;:false,&#34;steppedLine&#34;:false,&#34;targets&#34;:[{&#34;expr&#34;:&#34;sum
+</span><span class="s1">    by (code)(sum(irate(http_request_total{job=billing}[2m])))&#34;,&#34;format&#34;:&#34;time_series&#34;,&#34;intervalFactor&#34;:2,&#34;legendFormat&#34;:&#34;{{code}}&#34;,&#34;refId&#34;:&#34;A&#34;}],&#34;thresholds&#34;:[],&#34;timeFrom&#34;:null,&#34;timeShift&#34;:null,&#34;title&#34;:&#34;billing
+</span><span class="s1">    RPS&#34;,&#34;tooltip&#34;:{&#34;shared&#34;:true,&#34;sort&#34;:0,&#34;value_type&#34;:&#34;individual&#34;},&#34;type&#34;:&#34;graph&#34;,&#34;xaxis&#34;:{&#34;buckets&#34;:null,&#34;mode&#34;:&#34;time&#34;,&#34;name&#34;:null,&#34;show&#34;:true},&#34;yaxes&#34;:[{&#34;format&#34;:&#34;short&#34;,&#34;label&#34;:null,&#34;logBase&#34;:1,&#34;max&#34;:null,&#34;min&#34;:null,&#34;show&#34;:true},{&#34;format&#34;:&#34;short&#34;,&#34;label&#34;:null,&#34;logBase&#34;:1,&#34;max&#34;:null,&#34;min&#34;:null,&#34;show&#34;:true}]},{&#34;aliasColors&#34;:{},&#34;bars&#34;:false,&#34;dashLength&#34;:10,&#34;dashes&#34;:false,&#34;datasource&#34;:null,&#34;fill&#34;:1,&#34;gridPos&#34;:{&#34;h&#34;:7,&#34;w&#34;:12,&#34;x&#34;:12,&#34;y&#34;:0},&#34;id&#34;:3,&#34;legend&#34;:{&#34;alignAsTable&#34;:false,&#34;avg&#34;:false,&#34;current&#34;:false,&#34;max&#34;:false,&#34;min&#34;:false,&#34;rightSide&#34;:false,&#34;show&#34;:true,&#34;total&#34;:false,&#34;values&#34;:false},&#34;lines&#34;:true,&#34;linewidth&#34;:1,&#34;links&#34;:[],&#34;nullPointMode&#34;:&#34;null&#34;,&#34;percentage&#34;:false,&#34;pointradius&#34;:5,&#34;points&#34;:false,&#34;renderer&#34;:&#34;flot&#34;,&#34;repeat&#34;:null,&#34;seriesOverrides&#34;:[],&#34;spaceLength&#34;:10,&#34;stack&#34;:false,&#34;steppedLine&#34;:false,&#34;targets&#34;:[{&#34;expr&#34;:&#34;histogram_quantile(0.99,
+</span><span class="s1">    sum(rate(http_request_duration_seconds_bucket{job=billing}[2m])) by (route) *
+</span><span class="s1">    1e3&#34;,&#34;format&#34;:&#34;time_series&#34;,&#34;intervalFactor&#34;:2,&#34;legendFormat&#34;:&#34;{{route}} 99th
+</span><span class="s1">    percentile&#34;,&#34;refId&#34;:&#34;A&#34;},{&#34;expr&#34;:&#34;histogram_quantile(0.50, sum(rate(http_request_duration_seconds_bucket{job=billing}[2m]))
+</span><span class="s1">    by (route) * 1e3&#34;,&#34;format&#34;:&#34;time_series&#34;,&#34;intervalFactor&#34;:2,&#34;legendFormat&#34;:&#34;{{route}}
+</span><span class="s1">    median&#34;,&#34;refId&#34;:&#34;B&#34;},{&#34;expr&#34;:&#34;sum(rate(http_request_total{job=billing}[2m])) /
+</span><span class="s1">    sum(rate(http_request_duration_seconds_count{job=billing}[2m])) * 1e3&#34;,&#34;format&#34;:&#34;time_series&#34;,&#34;intervalFactor&#34;:2,&#34;legendFormat&#34;:&#34;mean&#34;,&#34;refId&#34;:&#34;C&#34;}],&#34;thresholds&#34;:[],&#34;timeFrom&#34;:null,&#34;timeShift&#34;:null,&#34;title&#34;:&#34;billing
+</span><span class="s1">    Latency&#34;,&#34;tooltip&#34;:{&#34;shared&#34;:true,&#34;sort&#34;:0,&#34;value_type&#34;:&#34;individual&#34;},&#34;type&#34;:&#34;graph&#34;,&#34;xaxis&#34;:{&#34;buckets&#34;:null,&#34;mode&#34;:&#34;time&#34;,&#34;name&#34;:null,&#34;show&#34;:true},&#34;yaxes&#34;:[{&#34;format&#34;:&#34;ms&#34;,&#34;label&#34;:null,&#34;logBase&#34;:1,&#34;max&#34;:null,&#34;min&#34;:null,&#34;show&#34;:true},{&#34;format&#34;:&#34;short&#34;,&#34;label&#34;:null,&#34;logBase&#34;:1,&#34;max&#34;:null,&#34;min&#34;:null,&#34;show&#34;:true}]}],&#34;refresh&#34;:&#34;&#34;,&#34;schemaVersion&#34;:16,&#34;style&#34;:&#34;dark&#34;,&#34;tags&#34;:[],&#34;time&#34;:{&#34;from&#34;:&#34;now-6h&#34;,&#34;to&#34;:&#34;now&#34;},&#34;timepicker&#34;:{&#34;refresh_intervals&#34;:[&#34;5s&#34;,&#34;10s&#34;,&#34;30s&#34;,&#34;1m&#34;,&#34;5m&#34;,&#34;15m&#34;,&#34;30m&#34;,&#34;1h&#34;,&#34;2h&#34;,&#34;1d&#34;],&#34;time_options&#34;:[&#34;5m&#34;,&#34;15m&#34;,&#34;1h&#34;,&#34;6h&#34;,&#34;12h&#34;,&#34;24h&#34;,&#34;2d&#34;,&#34;7d&#34;,&#34;30d&#34;]},&#34;timezone&#34;:&#34;browser&#34;,&#34;title&#34;:&#34;Service
+</span><span class="s1">    \u003e billing&#34;,&#34;uid&#34;:&#34;&#34;,&#34;version&#34;:0}]&#39;</span><span class="w">
+</span><span class="w"></span>kind<span class="p">:</span><span class="w"> </span>ConfigMap<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>labels<span class="p">:</span><span class="w">
+</span><span class="w">    </span>app<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">    </span>maintainer<span class="p">:</span><span class="w"> </span>damien@weave.works<span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>billing-dashboards<span class="w">
+</span><span class="w">  </span>namespace<span class="p">:</span><span class="w"> </span>billing</code></pre></div>
+</div>
+
+  <div class="tab-pane" title="billing-prometheus-rule.yaml">
+ <div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">apiVersion<span class="p">:</span><span class="w"> </span>monitoring.coreos.com/v1<span class="w">
+</span><span class="w"></span>kind<span class="p">:</span><span class="w"> </span>PrometheusRule<span class="w">
+</span><span class="w"></span>metadata<span class="p">:</span><span class="w">
+</span><span class="w">  </span>labels<span class="p">:</span><span class="w">
+</span><span class="w">    </span>app<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">    </span>maintainer<span class="p">:</span><span class="w"> </span>damien@weave.works<span class="w">
+</span><span class="w">    </span>prometheus<span class="p">:</span><span class="w"> </span>global<span class="w">
+</span><span class="w">    </span>role<span class="p">:</span><span class="w"> </span>alert-rules<span class="w">
+</span><span class="w">  </span>name<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w"></span>spec<span class="p">:</span><span class="w">
+</span><span class="w">  </span>groups<span class="p">:</span><span class="w">
+</span><span class="w">  </span>-<span class="w"> </span>name<span class="p">:</span><span class="w"> </span>billing-alerts.rules<span class="w">
+</span><span class="w">    </span>rules<span class="p">:</span><span class="w">
+</span><span class="w">    </span>-<span class="w"> </span>alert<span class="p">:</span><span class="w"> </span>HighErrorRate<span class="w">
+</span><span class="w">      </span>annotations<span class="p">:</span><span class="w">
+</span><span class="w">        </span>description<span class="p">:</span><span class="w"> </span>More<span class="w"> </span>than<span class="w"> </span><span class="m">10</span>%<span class="w"> </span>of<span class="w"> </span>requests<span class="w"> </span>to<span class="w"> </span>the<span class="w"> </span>billing<span class="w"> </span>service<span class="w"> </span>are<span class="w"> </span>failing<span class="w">
+</span><span class="w">          </span>with<span class="w"> </span>5xx<span class="w"> </span>errors<span class="w">
+</span><span class="w">        </span>details<span class="p">:</span><span class="w"> </span><span class="s1">&#39;{{$value | printf &#34;%.1f&#34;}}% errors for more than 5m&#39;</span><span class="w">
+</span><span class="w">        </span>service<span class="p">:</span><span class="w"> </span>billing<span class="w">
+</span><span class="w">      </span>expr<span class="p">:</span><span class="w"> </span>|<span class="sd">-
+</span><span class="sd">        rate(http_request_total{job=billing,code=~&#34;5..&#34;}[2m])</span><span class="w">
+</span><span class="w">            </span>/<span class="w"> </span>rate(http_request_duration_seconds_count{job=billing}<span class="p">[</span>2m<span class="p">]</span>)<span class="w"> </span>*<span class="w"> </span><span class="m">100</span><span class="w"> </span>&gt;<span class="w"> </span><span class="m">10</span><span class="w">
+</span><span class="w">      </span>for<span class="p">:</span><span class="w"> </span>5m<span class="w">
+</span><span class="w">      </span>labels<span class="p">:</span><span class="w">
+</span><span class="w">        </span>severity<span class="p">:</span><span class="w"> </span>critical</code></pre></div>
+</div>
+
+</div>
+</div>
+
+
+<p>What&rsquo;s interesting to me is that such an approach shifts writing
+configuration files from a big flat soup of properties to a familiar API
+problem: developers in charge of the platform get to define the high level
+objects they want to present to their users, can encode best practices and
+hide details in library code.</p>
+
+<p>For the curious minds, the <code>jk</code> script used to generate these Kubernetes
+objects can be found in the <a href="https://github.com/jkcfg/jk/tree/master/examples/kubernetes/micro-service" target="_blank">jk repository</a>.</p>
+
+<h2 id="built-for-configuration">Built for configuration<a href="#built-for-configuration" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>We&rsquo;re building <a href="https://github.com/jkcfg/jk" target="_blank"><code>jk</code></a> in an attempt to advance the configuration
+management discussion. It offers a different take on existing solutions:</p>
+
+<ul>
+<li><p><strong><code>jk</code> is a generation tool</strong>. We believe in a strict separation of
+configuration data and how that data is being used. For instance we do not
+take an opinionated view on how you should deploy applications to a cluster
+and leave that design choice in your hands. In a sense, <code>jk</code> is a pure
+function transforming a set of input into configuration files.</p></li>
+
+<li><p><strong><code>jk</code> is cross domain</strong>. <code>jk</code> generates JSON, YAML, <a href="https://github.com/hashicorp/hcl" target="_blank">HCL</a> as well as
+plain text files. It allows the generation of cross-domain configuration. In
+the micro-service example above, grafana dashboards and Kubernetes
+objects are part of two different domains that are usually treated
+differently. We could augment the example further by defining a list of AWS
+resources needed for that service to operate (eg. an RDS instance) as
+<a href="https://www.terraform.io/" target="_blank">Terraform</a> HCL.</p></li>
+
+<li><p><strong><code>jk</code> uses a general purpose language</strong>: javascript. The configuration
+domain attracts a lot of people interested in languages and the result is
+many new Domain Specific Languages (DSLs). We do not believe those new
+languages offer more expressive power than javascript and their tooling is
+generally lagging behind. With a widely used general purpose language, we get
+many things for free: unit test frameworks, linters, api documentation,
+refactoring tools, IDE support, static typing, ecosystem of libraries, &hellip;</p></li>
+
+<li><p><strong><code>jk</code> is hermetic</strong>. Hermeticity is the property to produce the same
+output given the same input no matter the machine the program is being run
+on. This seems like a great property for a tool generating configuration
+files. We achieve this with a custom v8-based runtime exposing as little as
+possible from the underlying OS. For instance you cannot access the process
+environment variables nor read file anywhere on the filesystem with <code>jk</code>.</p></li>
+
+<li><p><strong><code>jk</code> is fast!</strong> By being an embedded DSL and using v8 under the hood,
+we&rsquo;re significantly faster than the usual interpreters powering DSLs.</p></li>
+</ul>
+
+<h2 id="hello-world">Hello, World!<a href="#hello-world" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>The <code>jk</code> <a href="https://github.com/jkcfg/jk/tree/master/examples/quick-start/alice" target="_blank">&ldquo;Hello, World!&rdquo; example</a> generates a YAML file from a js
+object:</p>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="c1">// Alice is a developer.
+</span><span class="c1"></span><span class="k">const</span> <span class="nx">alice</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Alice&#39;</span><span class="p">,</span>
+  <span class="nx">beverage</span><span class="o">:</span> <span class="s1">&#39;Club-Mate&#39;</span><span class="p">,</span>
+  <span class="nx">monitors</span><span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="nx">languages</span><span class="o">:</span> <span class="p">[</span>
+    <span class="s1">&#39;python&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;haskell&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;c++&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;68k assembly&#39;</span><span class="p">,</span> <span class="c1">// Alice is cool like that!
+</span><span class="c1"></span>  <span class="p">],</span>
+<span class="p">};</span>
+
+<span class="c1">// Instruct to write the alice object as a YAML file.
+</span><span class="c1"></span><span class="k">export</span> <span class="k">default</span> <span class="p">[</span>
+  <span class="p">{</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">alice</span><span class="p">,</span> <span class="nx">file</span><span class="o">:</span> <span class="sb">`developers/</span><span class="si">${</span><span class="nx">alice</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">toLowerCase</span><span class="p">()</span><span class="si">}</span><span class="sb">.yaml`</span> <span class="p">},</span>
+<span class="p">];</span>
+</code></pre></div>
+<p>Run this example with:</p>
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ jk generate -v alice.js
+wrote developers/alice.yaml</code></pre></div>
+<p>This results in the <code>developers/alice.yaml</code> file:</p>
+<div class="highlight"><pre class="chroma"><code class="language-yaml" data-lang="yaml">beverage<span class="p">:</span><span class="w"> </span>Club-Mate<span class="w">
+</span><span class="w"></span>languages<span class="p">:</span><span class="w">
+</span><span class="w"></span>-<span class="w"> </span>python<span class="w">
+</span><span class="w"></span>-<span class="w"> </span>haskell<span class="w">
+</span><span class="w"></span>-<span class="w"> </span>c++<span class="w">
+</span><span class="w"></span>-<span class="w"> </span>68k<span class="w"> </span>assembly<span class="w">
+</span><span class="w"></span>monitors<span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
+</span><span class="w"></span>name<span class="p">:</span><span class="w"> </span>Alice</code></pre></div>
+<h2 id="typing-with-typescript">Typing with TypeScript<a href="#typing-with-typescript" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>The main reason to use a general purpose language is to benefit from its
+ecosystem. With javascript we can leverage typing systems such as
+<a href="https://www.typescriptlang.org/" target="_blank">TypeScript</a> or <a href="https://flow.org/" target="_blank">flow</a> to help authoring configuration.</p>
+
+<p>Types help in a number of ways, including when refactoring large amounts of
+code or defining and documenting APIs. I&rsquo;d also like to show it helps at
+authoring time by providing context-aware auto-completion:</p>
+
+<p><img src="types-autocompletion.png" alt="Types - autocompletion" /></p>
+
+<p>In the screenshot above we&rsquo;re defining a container in a <code>Deployment</code> and the
+IDE only offers the fields that are valid at the cursor position along with
+the accompanying type information and documentation.</p>
+
+<p>Similarly, typing can provide some level of validation:</p>
+
+<p><img src="types-validation.png" alt="Types - autocompletion" /></p>
+
+<p>The IDE is telling us we haven&rsquo;t quite defined a valid <code>apps/v1</code>
+<code>Deployment</code>. We are missing the mandatory <code>selector</code> field.</p>
+
+<h2 id="status-and-future-work">Status and Future work<a href="#status-and-future-work" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>Albeit being still young, we believe <code>jk</code> is already useful enough to be a
+contender in the space. There&rsquo;s definitely a lot of room for improvement
+though:</p>
+
+<ul>
+<li><strong>Helm integration</strong>: we&rsquo;d like <code>jk</code> to be able to render Helm charts
+client side and expose the result as js objects for further manipulation.</li>
+<li><strong>Jsonnet integration</strong>: similarly, it should be possible to consume
+existing jsonnet programs.</li>
+<li><strong>Native TypeScript support</strong>: currently developers need to run the <code>tsc</code>
+transpiler by hand. We should be able to make <code>jk</code> consume TypeScript files
+natively a la <a href="https://github.com/denoland/deno" target="_blank">deno</a>.</li>
+<li><strong>Kubernetes strategic merging</strong>: the object merging primitives are
+currently quite basic and we&rsquo;d like to extend the object merging capabilities
+of the standard library to implement Kubernetes <a href="https://github.com/kubernetes/community/blob/master/contributors/devel/sig-api-machinery/strategic-merge-patch.md" target="_blank">strategic
+merging</a>.</li>
+<li>Expose <strong>type generation for Kubernetes custom resources</strong>.</li>
+<li>More <strong>helper libraries</strong> to generate Grafana dashboards, custom resources
+for the Prometheus operator, &hellip;</li>
+<li>Produce <strong>more examples</strong>: it&rsquo;s easy to feel a bit overwhelmed when facing
+a new language and paradigm. More examples would make <code>jk</code> more approachable.</li>
+</ul>
+
+<h2 id="try-it-yourself">Try it yourself!<a href="#try-it-yourself" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>It&rsquo;s easy to download <code>jk</code> from the <a href="https://github.com/jkcfg/jk/releases" target="_blank">github release page</a> and
+<a href="https://github.com/jkcfg/jk/tree/master/examples/quick-start/alice" target="_blank">try it yourself</a>. You can also peruse through the (currently
+small amount of) <a href="https://github.com/jkcfg/jk/tree/master/examples" target="_blank">examples</a>.</p>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://damien.lespiau.name/tags/jk">jk</a></span><span class="tag"><a href="https://damien.lespiau.name/tags/configuration">configuration</a></span><span class="tag"><a href="https://damien.lespiau.name/tags/go">go</a></span><span class="tag"><a href="https://damien.lespiau.name/tags/javascript">javascript</a></span><span class="tag"><a href="https://damien.lespiau.name/tags/typescript">typescript</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1016 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-06-12 11:21 &#43;0100</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="prev-post" href="https://damien.lespiau.name/posts/2017-01-29-building-and-using-coverage-instrumented-programs-with-go/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Building and using coverage-instrumented programs with Go</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="https://damien.lespiau.name/">Damien Lespiau</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://damien.lespiau.name/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="https://damien.lespiau.name/js/main.min.e823f87daf02d2444d5b9be14489d27958b4fdcfd93a26e04b289a5d7597d82a.js" integrity="sha256-6CP4fa8C0kRNW5vhRInSeVi0/c/ZOibgSyiaXXWX2Co="></script>
+
+</body>
+
+</html>

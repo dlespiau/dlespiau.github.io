@@ -11,10 +11,10 @@
 		
 		<item>
 			<title>jk - Configuration as code with TypeScript</title>
-			<link>https://damien.lespiau.name/posts/2019-06-06-jk-configuration-as-code/</link>
+			<link>https://damien.lespiau.name/posts/2019-06-12-jk-configuration-as-code/</link>
 			<pubDate>Wed, 12 Jun 2019 10:21:00 +0000</pubDate>
 			
-			<guid>https://damien.lespiau.name/posts/2019-06-06-jk-configuration-as-code/</guid>
+			<guid>https://damien.lespiau.name/posts/2019-06-12-jk-configuration-as-code/</guid>
 			<description>Of all the problems we have confronted, the ones over which the most brain power, ink, and code have been spilled are related to managing configurations — Borg, Omega, and Kubernetes - Lessons learned from three container-management systems over a decade
  This post is the first of a series introducing jk. We will start the series by showing a concrete example of what jk can do for you.</description>
 			<content type="html"><![CDATA[
